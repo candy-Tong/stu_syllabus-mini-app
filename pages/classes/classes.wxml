@@ -1,0 +1,23 @@
+<view class="page">
+  
+  <view class="weui-grids">
+    <view class='row' >
+      <view  class="table-grid" wx:for='{{week}}' wx:key='*this' hover-class="weui-grid_active">
+        <view class="week cell">{{item}}</view>
+      </view>
+
+    </view> 
+    <view style='position: relative'>
+      <view class='row' wx:for="{{times}}" wx:key="*this">
+          <view  class="table-grid" hover-class="weui-grid_active">
+              <view class="cell">{{item}}</view>
+          </view>     
+      </view>
+       <view class='classes-box'>
+    </view>
+      
+  </view>
+ 
+  </view>
+    
+</view>

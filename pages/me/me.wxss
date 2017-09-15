@@ -1,0 +1,48 @@
+/* pages/me/index.wxss */
+
+.person-center {
+  padding: 0 0 0 0;
+}
+
+.login_button {
+  width: 100%;
+  height: 500rpx;
+  background-color: white;
+  text-align: center;
+  line-height: 500rpx;
+  color:#999999;
+  border-radius: 0
+}
+.login_button:after{
+  border-radius: 0;
+  border: 0;
+}
+
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 150rpx;
+}
+
+.userinfo-avatar {
+  width: 200rpx;
+  height: 200rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+  line-height: 60rpx;
+  margin-bottom: 50rpx;
+}
+
+.option {
+  width: 100%;
+  margin: 0 0 50rpx 0;
+}
+
+.option-item {
+  color: #495060;
+}

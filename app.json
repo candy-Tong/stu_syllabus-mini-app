@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/me/me",
+    "pages/classes/classes"    
+    
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "WeUI for 小程序",
+    "navigationBarBackgroundColor": "#f8f8f8",
+    "backgroundColor": "#f8f8f8"
+  },
+  "tabBar": {
+    "selectedColor": "#495060",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/classes/classes",
+        "text": "课表",
+        "iconPath": "/image/idea.png",
+        "selectedIconPath": "/image/idea_on.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "/image/person-center.png",
+        "selectedIconPath": "/image/person-center_on.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true
+}

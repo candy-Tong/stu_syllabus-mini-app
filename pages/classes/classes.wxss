@@ -1,0 +1,32 @@
+.table-grid{
+  position:relative;
+  float:left;
+  padding:25rpx 5px;
+  width:12.5%;
+  height: 7.14%;
+  box-sizing:border-box;
+  border-right:1rpx solid #D9D9D9;
+  border-bottom:1rpx solid #D9D9D9;
+}
+.row{
+  overflow: hidden;
+}
+.cell{
+  display:block;
+  text-align:center;
+  color:#000000;
+  font-size:38rpx;
+  line-height: 37rpx;
+}
+.week{
+   min-height: 37rpx; 
+}
+.classes-box{
+  position: absolute;
+  left: 12.5%;
+  top: 0;
+  background: #199;
+  width: 100px;
+  height: 100px;
+  z-index: 1;
+}
