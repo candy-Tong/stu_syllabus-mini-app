@@ -7,35 +7,38 @@
     </view>
   </block>
   <block wx:else>
-    <button lang="zh_CN"  open-type="getUserInfo" bindgetuserinfo="bindgetuserinfo" class="login_button" >点击登录</button>
+    <button lang="zh_CN" open-type="getUserInfo" bindgetuserinfo="bindgetuserinfo" class="login_button">点击登录</button>
   </block>
 
   <view class="option ">
-    <!-- <view class="weui-panel__hd">菜单</view> -->
     <view class="weui-panel__bd">
       <view class="weui-media-box weui-media-box_small-appmsg">
         <view class="option-item weui-cells weui-cells_in-small-appmsg">
-          <navigator open-type="switchTab" url="/pages/order/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-            <view class="weui-cell__bd weui-cell_primary">
-              <view>我的订单</view>
-            </view>
-            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-          </navigator>
 
-          <!-- this part is not finish -->
-          <!-- <navigator class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-            <view class="weui-cell__bd weui-cell_primary">
-              <view>我的收藏</view>
+          <view bindtap="bindAccount" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">当前用户</view>
+            <view class="weui-cell__ft">{{account}}</view>
+          </view>
+
+          <block wx:if="{{is_login}}">
+            <view class="weui-cell weui-cell_access">
+              <view class="weui-cell__bd">当前学年</view>
+              <view class="weui-cell__bd">
+                <picker mode="selector" bindchange="year_picker_change" value="{{year_index}}" range="{{year_picker}}">
+                  <view class="weui-cell__ft weui-cell__ft_in-access">{{year_picker[year_index]}}</view>
+                </picker>
+              </view>
             </view>
-            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-          </navigator> -->
-          
-          <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-            <view class="weui-cell__bd weui-cell_primary">
-              <view>用户反馈</view>
+            <view class="weui-cell weui-cell_access">
+              <view class="weui-cell__bd">当前学期</view>
+              <view class="weui-cell__bd">
+                <picker mode="selector" bindchange="semester_picker_change" value="{{semester_index}}" range="{{semester_picker}}">
+                  <view class="weui-cell__ft weui-cell__ft_in-access">{{semester_picker[semester_index]}}</view>
+                </picker>
+              </view>
             </view>
-            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-          </navigator>
+          </block>
+
         </view>
       </view>
     </view>
@@ -44,12 +47,7 @@
     <view class="weui-panel__bd">
       <view class="weui-media-box weui-media-box_small-appmsg">
         <view class="option-item weui-cells weui-cells_in-small-appmsg">
-          <navigator hidden="{{is_phone_bound===true}}" url="/pages/me/bindphone/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-            <view class="weui-cell__bd weui-cell_primary">
-              <view>绑定手机</view>
-            </view>
-            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-          </navigator>
+
           <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
             <view class="weui-cell__bd weui-cell_primary">
               <view>关于我们</view>

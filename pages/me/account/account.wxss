@@ -1,0 +1,20 @@
+/* pages/me/bindphone/index.wxss */
+
+
+.weui-vcode-btn:active {
+  color: #2d8cf0;
+  background-color: rgba(200, 200, 200, 0.1);
+  opacity: 0.7;
+}
+
+.bind_phone_button {
+  margin-top: 20px;
+  color: #2d8cf0;
+  background-color: white;
+  width: 420rpx;
+}
+
+.bind_phone_button_hover {
+  background-color: rgba(200, 200, 200, 0.1);
+  opacity: 0.7;
+}

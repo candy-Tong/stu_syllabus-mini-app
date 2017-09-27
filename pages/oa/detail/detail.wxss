@@ -1,0 +1,5 @@
+/* pages/oa/detail/detail.wxss */
+ @import "/wxParse/wxParse.wxss";
+ .panel{
+   margin: 20px;
+ } 

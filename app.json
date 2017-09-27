@@ -1,14 +1,17 @@
 {
   "pages": [
-    "pages/me/me",
-    "pages/classes/classes"    
     
+    "pages/me/me",
+    "pages/me/account/account",
+    "pages/classes/classes",
+    "pages/oa/oa",
+    "pages/oa/detail/detail"
   ],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "WeUI for 小程序",
-    "navigationBarBackgroundColor": "#f8f8f8",
-    "backgroundColor": "#f8f8f8"
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#2d8cf0",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "white"
   },
   "tabBar": {
     "selectedColor": "#495060",
