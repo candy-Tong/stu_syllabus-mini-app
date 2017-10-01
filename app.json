@@ -1,11 +1,13 @@
 {
   "pages": [
-    
-    "pages/me/me",
-    "pages/me/account/account",
     "pages/classes/classes",
+    "pages/me/me",
+    "pages/classes/week/week",
+    "pages/me/account/account",
+    
     "pages/oa/oa",
     "pages/oa/detail/detail"
+    
   ],
   "window": {
     "backgroundTextStyle": "light",

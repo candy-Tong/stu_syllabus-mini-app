@@ -13,7 +13,7 @@ Page({
   bindAccount(e) {
     let that = this
     wx.request({
-      url: global.baseurl + 'wechat/mini/bind',
+      url: global.baseurl + 'wechat/mini/login/bind',
       data: {
         token: global.token,
         account: that.account,

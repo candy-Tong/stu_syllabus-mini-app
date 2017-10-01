@@ -6,6 +6,9 @@
   background-size: 100% 100%;
   opacity: 0.5
 } */
+.week_selector{
+  padding: 40px 0
+}
 
 .table-grid {
   position: relative;

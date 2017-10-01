@@ -89,7 +89,7 @@ App({
         success: function () {
           //session 未过期，并且在本生命周期一直有效
           wx.request({
-            url: global.baseurl + 'wechat/mini/auto_login',
+            url: global.baseurl + 'wechat/mini/login/auto_login',
             data: {
               token: global.token
             },
@@ -152,7 +152,7 @@ App({
             mask: true
           })
           wx.request({
-            url: global.baseurl + 'wechat/mini/login',
+            url: global.baseurl + 'wechat/mini/login/first',
             data: {
               js_code: login_info.code,
               iv: login_info.iv,

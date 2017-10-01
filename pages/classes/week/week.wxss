@@ -1,0 +1,5 @@
+/* pages/classes/week/week.wxss */
+
+.week{
+  text-align: center
+}
