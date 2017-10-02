@@ -9,8 +9,6 @@ Page({
     userInfo: {},
     account: '',
     years: '',
-    semester: NaN,
-    semester_picker: ['秋季学期', '春季学期', '夏季学期']
   },
   // 用于对比全局token，有改变则要更新界面
   token: 'none',
@@ -45,22 +43,9 @@ Page({
           }
         }, {
           func: function () {
-            let years = global.years
-            // 设置学年范围
-            let enrollment_year = global.account.substring(0, 2)
-            let semester_index = global.semester-1
-            let year_picker = []
-            for (let i = 0; i < 6; i++) {
-              year_picker.push('20' + (Number(enrollment_year) + i) + '-' + '20' + (Number(enrollment_year) + i + 1))
-            }
-            // 找出当前学年、学期的picker index
-            let year_index = year_picker.findIndex(function (year) {
-              return year === global.years
-            })
             that.setData({
-              year_picker,
-              year_index,
-              semester_index,
+              years: global.years,
+              semester: global.semester,
               is_login: true
             })
           }
@@ -92,28 +77,26 @@ Page({
 
   year_picker_change(e) {
     console.log(e)
-    let year_index = e.detail.value
-    global.years = this.data.year_picker[year_index]
+    global.years.year_index = e.detail.value
     wx.setStorage({
       key: 'years',
       data: global.years,
     })
     this.setData({
-      year_index
+      years: global.years
     })
   },
 
   semester_picker_change(e) {
     console.log(e)
     let semester_index = Number(e.detail.value)
-    let semester = semester_index+1
-    global.semester = semester
+    global.semester.semester_index = semester_index + 1
     wx.setStorage({
       key: 'semester',
       data: global.semester,
     })
     this.setData({
-      semester_index
+      semester: global.semester
     })
   },
 
@@ -130,7 +113,6 @@ Page({
   onShow: function () {
     // 监听当前用户的改变
     if (this.data.account != global.account) {
-      this.data.account = global.account
       this.setData({
         account: global.account
       })
@@ -138,14 +120,14 @@ Page({
 
     if (this.token !== global.token) {
       this.token = global.token
-      var _this = this
+      var that = this
       var callback = [
         {
           func: function () {
             //调用应用实例的方法获取全局数据
             app.getUserInfo(function (userInfo) {
               //更新数据
-              _this.setData({
+              that.setData({
                 userInfo: userInfo,
                 isLogin: true
               })
@@ -153,22 +135,9 @@ Page({
           }
         }, {
           func: function () {
-            let years = global.years
-            let semester_index = global.semester-1
-            // 设置学年范围
-            let enrollment_year = global.account.substring(0, 2)
-            let year_picker = []
-            for (let i = 0; i < 6; i++) {
-              year_picker.push('20' + (Number(enrollment_year) + i) + '-' + '20' + (Number(enrollment_year) + i + 1))
-            }
-            // 找出当前学年、学期的picker index
-            let year_index = year_picker.findIndex(function (year) {
-              return year === global.years
-            })
-            _this.setData({
-              year_picker,
-              year_index,
-              semester_index,
+            that.setData({
+              years: global.years,
+              semester: global.semester,
               is_login: true
             })
           }
@@ -176,7 +145,7 @@ Page({
         {
           isError: true,
           func: function () {
-            _this.setData({
+            that.setData({
               isLogin: false
             })
           }

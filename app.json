@@ -1,8 +1,10 @@
 {
   "pages": [
-    "pages/classes/classes",
     "pages/me/me",
     "pages/classes/week/week",
+    "pages/classes/classes",
+    
+   
     "pages/me/account/account",
     
     "pages/oa/oa",

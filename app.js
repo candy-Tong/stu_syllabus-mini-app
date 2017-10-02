@@ -21,15 +21,14 @@ App({
       return page.__route__ == pageName
     })
   },
-  onLaunch: function () {
-    var _this = this
-    var that = this
+  init() {
     global.token = wx.getStorageSync('token')
     global.account = wx.getStorageSync('account')
     global.password = wx.getStorageSync('password')
 
     global.years = wx.getStorageSync('years')
     global.semester = wx.getStorageSync('semester')
+
     // 初始化学期信息
     // 设为当前学年当前学期
     let date = new Date()
@@ -48,6 +47,11 @@ App({
       }
     }
     console.log(global)
+  },
+  onLaunch: function () {
+    // 初始化
+    this.init()
+
     if (global.token && global.account) {
       console.log('已登录')
       this.autoLogin()
@@ -179,7 +183,7 @@ App({
               //更新数据
 
               // 是否绑定汕大账号
-              
+
               if (!res.data.result.account) {
                 wx.navigateTo({
                   url: '/pages/me/account/account',
@@ -226,56 +230,93 @@ App({
     })
   },
 
+  error_callback(callBackObject) {
+    // 错误回调
+    console.log("登录错误回调开始")
+    if (typeof callBackObject == 'object') {
+      callBackObject.forEach(function (item, index, object) {
+        if (item.isError && item.func) {
+          if (item.parm) {
+            item.func(item.parm)
+          } else {
+            item.func()
+          }
+        }
+      })
+    }
+  },
+
   updateLoginMsg(data, callBackObject) {
-    var isError = false
-    if (data.result && data.result.token) {
-      var token = data.result.token
-
-      global.token = token
-
-
-    } else {
-      isError = true
+    if (!data.result || !data.result.token) {
       console.log("发生错误，token不存在")
+      this.error_callback(callBackObject)
     }
 
-    if (isError == false) {
-      try {
 
-        wx.setStorageSync('token', token)
+    // 更新数据
+    let token = data.result.token
 
-      } catch (e) {
-        console.log("缓存token发生错误")
-      }
-      global.reflashLogin = true
-      console.log("登录回调开始")
-      if (typeof callBackObject == 'object') {
-        callBackObject.forEach(function (item, index, object) {
-          if (item.func && (item.isError == undefined || item.isError != true)) {
-            if (item.parm) {
-              item.func(item.parm)
-            } else {
-              item.func()
-            }
-          }
-        })
-      }
+    global.token = token
+    global.account = data.result.account
+    global.password = data.result.password
 
-    } else if (isError == true) {
-      console.log("登录错误回调开始")
-      if (typeof callBackObject == 'object') {
-        callBackObject.forEach(function (item, index, object) {
-          if (item.isError && item.func) {
-            if (item.parm) {
-              item.func(item.parm)
-            } else {
-              item.func()
-            }
-          }
-        })
-      }
+    // 初始化学期信息
+    // 设为当前学年
+    let enrollment_year = global.account.substring(0, 2)
+    let year_picker = []
+    for (let i = 0; i < 6; i++) {
+      year_picker.push('20' + (Number(enrollment_year) + i) + '-' + '20' + (Number(enrollment_year) + i + 1))
+    }
+    // 找出当前学年、学期的picker index
+    let date = new Date()
+    let this_year = date.getFullYear() + '-' + (Number(date.getFullYear()) + 1)
+    let year_index = year_picker.findIndex(function (year) {
+      return year === this_year
+    })
+    global.years = {
+      enrollment_year,
+      year_picker,
+      year_index
+    }
+    // 设为当前学期
+    let semester_picker = ['秋季学期', '春季学期', '夏季学期']
+    let semester_index
+    let this_month = date.getMonth + 1
+    if (this_month < 8) {
+      semester_index = 2
+    } else if (this_month < 9) {
+      semester_index = 3
     } else {
-      console.log("isError出现特殊情况，位置updateLoginMsg")
+      semester_index = 1
+    }
+    global.semester = {
+      semester_picker,
+      semester_index
+    }
+
+    // 写入缓存
+
+    try {
+      wx.setStorageSync('token', global.token)
+      wx.setStorageSync('account', global.account)
+      wx.setStorageSync('password', global.password)
+      wx.setStorageSync('years', global.years)
+      wx.setStorageSync('semester', global.semester)
+    } catch (e) {
+      console.log("缓存token发生错误")
+    }
+
+    console.log("登录回调开始")
+    if (typeof callBackObject == 'object') {
+      callBackObject.forEach(function (item, index, object) {
+        if (item.func && (item.isError == undefined || item.isError != true)) {
+          if (item.parm) {
+            item.func(item.parm)
+          } else {
+            item.func()
+          }
+        }
+      })
     }
 
   },
@@ -362,14 +403,4 @@ App({
     })
   },
 
-
-
-  // globalData: {
-  //   // showError为true时，网络请求非200会弹框报错
-  //   showError: true,
-  //   baseurl: 'http://candycute.cn:8000/',
-
-  //   userInfo: null,
-  //   reflashLogin: false
-  // }
 })

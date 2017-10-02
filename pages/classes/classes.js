@@ -9,7 +9,7 @@ Page({
   semester: NaN,
 
   onLoad: function (options) {
-    showWeek:false
+    showWeek: false
   },
 
   /**
@@ -23,8 +23,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log(global.years !== this.years || global.semester !== this.semester)
-    if (global.years !== this.years || global.semester !== this.semester) {
+
+    if (global.years.year_picker[global.years.year_index] !== this.years || global.semester.semester_picker[global.semester.semester_index] !== this.semester) {
       console.log(color)
       let that = this
       console.log(global)
@@ -37,8 +37,8 @@ Page({
         data: {
           username: global.account,
           password: global.password,
-          years: global.years,
-          semester: global.semester,
+          years: global.years.year_picker[global.years.year_index],
+          semester: global.semester.semester_index ,
           submit: ' query'
         },
         success(res) {
@@ -110,10 +110,25 @@ Page({
   /**
    * 下拉刷新
    */
-  reachTop() {
-    let showWeek=!this.data.showWeek
-    this.setData({
-      showWeek
+  onPullDownRefresh() {
+    wx.stopPullDownRefresh()
+    wx.showActionSheet({
+      itemList: [
+        '刷新课表',
+        '设置学期',
+        '设置周数'
+      ],
+      success: function (res) {
+        if (!res.cancel) {
+          console.log(res.tapIndex)
+        }
+      }
     })
-  }
+  },
+  /**
+ * 页面上拉触底事件的处理函数
+ */
+  onReachBottom: function () {
+
+  },
 });
