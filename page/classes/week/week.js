@@ -1,41 +1,18 @@
-// pages/classes/week/week.js
+// page/classes/week/week.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    semester:[]
-  },
-
-  radioChange: function (e) {
-    console.log('radio发生change事件，携带value值为：', e.detail.value);
-
-    var week_list = this.data.week_list;
-    for (var i = 0, len = week_list.length; i < len; ++i) {
-      week_list[i].checked = week_list[i].value == e.detail.value;
-    }
-
-    this.setData({
-      week_list: week_list
-    });
+  
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let week_list=[]
-    for(let i=0;i<20;i++){
-      let week={}
-      week.name=`第${i+1}周`
-      week.value=i+1
-      week.checked=false
-      week_list.push(week)
-    }
-    this.setData({
-      week_list
-    })
+  
   },
 
   /**

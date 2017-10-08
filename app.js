@@ -29,23 +29,6 @@ App({
     global.years = wx.getStorageSync('years')
     global.semester = wx.getStorageSync('semester')
 
-    // 初始化学期信息
-    // 设为当前学年当前学期
-    let date = new Date()
-    if (!global.years) {
-      let this_year = date.getFullYear()
-      global.years = this_year + '-' + (Number(this_year) + 1)
-    }
-    if (!global.semester) {
-      let this_month = date.getMonth + 1
-      if (this_month < 8) {
-        global.semester = 2
-      } else if (this_month < 9) {
-        global.semester = 3
-      } else {
-        global.semester = 1
-      }
-    }
     console.log(global)
   },
   onLaunch: function () {

@@ -1,0 +1,23 @@
+<!--pages/classes/setting/setting.wxml-->
+
+<view class="weui-cells__title">选择学期</view>
+
+<view class="weui-cell weui-cell_select">
+  <view class="weui-cell__hd weui-cell__hd_in-select-after">
+    <view class="weui-label">当前学期</view>
+  </view>
+  <view class="weui-cell__bd">
+    <picker bindchange="bindSemesterChange" value="{{semester.semester_index-1}}" range="{{semester.semester_picker}}">
+      <view class="weui-select weui-select_in-select-after">{{semester.semester_picker[semester.semester_index-1]}}</view>
+    </picker>
+  </view>
+</view>
+
+<view class="week-select-title weui-cells__title">选择周数</view>
+
+
+<view class="week-select page__bd page__bd_spacing">
+  <slider show-value value="1" min="1" max="20" activeColor="#2d8cf0" />
+</view>
+
+<button class="setting-button weui-btn" hover-class="setting-button-hover">确定</button>
