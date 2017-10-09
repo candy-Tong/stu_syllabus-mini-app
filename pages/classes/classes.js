@@ -7,6 +7,7 @@ Page({
   },
   years: '',
   semester: NaN,
+  week:0,
 
   onLoad: function (options) {
     showWeek: false
@@ -24,10 +25,10 @@ Page({
    */
   onShow: function () {
 
-    if (global.years.year_picker[global.years.year_index] !== this.years || global.semester.semester_picker[global.semester.semester_index] !== this.semester) {
-      console.log(color)
+    if (global.years.year_index !== this.years_index || global.semester.semester_index !== this.semester_index ) {
+      this.years_index = global.years.year_index
+      this.semester_index = global.semester.semester_index
       let that = this
-      console.log(global)
       wx.request({
         url: global.stuUrl + '/credit/api/v2.1/syllabus',
         method: 'post',
@@ -37,12 +38,11 @@ Page({
         data: {
           username: global.account,
           password: global.password,
-          years: global.years.year_picker[global.years.year_index],
+          years: global.years.year_picker[global.years.year_index-1],
           semester: global.semester.semester_index ,
           submit: ' query'
         },
         success(res) {
-          console.log(res.data)
           var classes = res.data.data.classes
           that.showClass(classes)
         }
@@ -115,13 +115,18 @@ Page({
     wx.showActionSheet({
       itemList: [
         '刷新课表',
-        '设置学期',
-        '设置周数'
+        '设置课表'
       ],
       success: function (res) {
         if (!res.cancel) {
           console.log(res.tapIndex)
+          if (res.tapIndex===1){
+            wx.navigateTo({
+              url: 'setting/setting'
+            })
+          }
         }
+        
       }
     })
   },

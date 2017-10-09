@@ -7,11 +7,13 @@ global.account
 global.password
 global.years
 global.semester
+global.week
 
 global.showError = true
 global.baseurl = 'https://candycute.cn/'
 global.stuUrl = 'https://class.stuapps.com'
 global.userInfo = null
+
 
 App({
 
@@ -28,6 +30,7 @@ App({
 
     global.years = wx.getStorageSync('years')
     global.semester = wx.getStorageSync('semester')
+    global.week = wx.getStorageSync('week')
 
     console.log(global)
   },
@@ -276,6 +279,8 @@ App({
       semester_picker,
       semester_index
     }
+    // 设为第一周
+    global.week=1
 
     // 写入缓存
 
@@ -285,6 +290,7 @@ App({
       wx.setStorageSync('password', global.password)
       wx.setStorageSync('years', global.years)
       wx.setStorageSync('semester', global.semester)
+      wx.setStorageSync('week', global.week)
     } catch (e) {
       console.log("缓存token发生错误")
     }

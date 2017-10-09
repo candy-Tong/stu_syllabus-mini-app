@@ -7,6 +7,38 @@ Page({
   data: {
   
   },
+  setting(e){
+    let pages = getCurrentPages()
+    let lastPage=pages[pages.length-2]
+    console.log(lastPage)
+    wx.navigateBack({
+      delta: 1
+    })
+  },
+
+  bindWeekChange(e) {
+    let week = Number(e.detail.value)
+    global.week = week
+    wx.setStorage({
+      key: 'week',
+      data: global.week,
+    })
+    this.setData({
+      week: global.week
+    })
+  },
+
+  bindYearsChange(e) {
+    let year_index = Number(e.detail.value)
+    global.years.year_index = year_index + 1
+    wx.setStorage({
+      key: 'years',
+      data: global.years,
+    })
+    this.setData({
+      years: global.years
+    })
+  },
 
   bindSemesterChange(e){
     let semester_index = Number(e.detail.value)
@@ -25,7 +57,9 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      semester: global.semester
+      years:global.years,
+      semester: global.semester,
+      week:global.week
     })
   },
 
@@ -57,24 +91,6 @@ Page({
   
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
   
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
 })
