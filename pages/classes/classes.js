@@ -25,27 +25,35 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (this.week !== global.week) {
-      this.weekChange(this.data.lessons)
+    console.log(global.token)
+    if (!global.token) {
+    
+      wx.showModal({
+        title: '提示',
+        content: '未登录,是否跳转',
+        showCancel: false,
+        confirmColor: "#2d8cf0",
+        success: function (res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+            wx.switchTab({
+              url: '/pages/me/me'
+            })
+          }
+        }
+      })
+      return
+    }
+    if (this.data.curWeek !== global.week) {
+      this.setData({
+        curWeek:global.week
+      })
     }
     if (global.years.year_index !== this.years_index || global.semester.semester_index !== this.semester_index) {
       this.refalshSyllabus()
     }
   },
-  weekChange(lessions){
-    if(!lessions){
-      return
-    }
-    this.week = global.week
-    let haveClass = []
-    for (let i = 0; i < lessions.length; i++) {
-      haveClass.push(lessions[i].week.includes(global.week))
-    }
-    console.log(haveClass)
-    this.setData({
-      haveClass
-    })
-  },
+
 
   refalshSyllabus() {
     this.years_index = global.years.year_index
@@ -56,7 +64,7 @@ Page({
       mask: true
     })
     wx.request({
-      url: global.stuUrl + '/credit/api/v2.1/syllabus',
+      url: global.stuUrl + '/credit/api/v2/sync_syllabus',
       method: 'post',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
@@ -64,12 +72,12 @@ Page({
       data: {
         username: global.account,
         password: global.password,
-        years: global.years.year_picker[global.years.year_index - 1],
+        years: global.years.year_picker[global.years.year_index],
         semester: global.semester.semester_index,
         submit: ' query'
       },
       success(res) {
-        var classes = res.data.data.classes
+        var classes = res.data
         that.showClass(classes)
       },
       complete(res) {
@@ -79,45 +87,34 @@ Page({
   },
 
   showClass(classes) {
+
     var that = this
     var lessons = []
 
-    for (var i = 0; i < classes.length; i++) {
+    for (let i = 0; i < classes.length; i++) {
       var classname = classes[i].name
       classname = classname.replace(/\[.*\]/, '')
       var room = classes[i].room
       room = room.replace('座', '')
       console.log(classname)
       var classColor = color[i]
-      for (var j = 0; j < 7; j++) {
-        if (classes[i].days['w' + j] !== 'None') {
 
-          //暂时不区分单双周
+      for (let j in classes[i].class_schedule) {
+        console.log(j)
+        classes[i].class_schedule[j]
 
-          classes[i].days['w' + j] = classes[i].days['w' + j].replace('单', '')
-          classes[i].days['w' + j] = classes[i].days['w' + j].replace('双', '')
-          let [weekBegin, weekEnd] = classes[i].duration.split('-')
-          let week = []
-          weekBegin = Number(weekBegin)
-          weekEnd = Number(weekEnd)
-          for (let i = weekBegin; i <= weekEnd; i++) {
-            week.push(i)
-          }
-
-          lessons.push({
-            left: j === 0 ? 7 : j,
-            top: that.transformClassTime(classes[i].days['w' + j]),
-            height: classes[i].days['w' + j].length,
-            color: classColor,
-            classname,
-            room,
-            week
-          })
-
-        }
+        lessons.push({
+          left: classes[i].class_schedule[j].day_in_week === 0 ? 7 : classes[i].class_schedule[j].day_in_week,
+          top: that.transformClassTime(classes[i].class_schedule[j].time),
+          height: classes[i].class_schedule[j].time.length,
+          color: classColor,
+          classname,
+          room,
+          week: classes[i].class_schedule[j].weeks
+        })
       }
+      
     }
-    this.weekChange(lessons)
     this.setData({
       lessons
     })

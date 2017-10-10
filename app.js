@@ -1,13 +1,13 @@
 //app.js
 
-global.token = undefined
+global.token = wx.getStorageSync('token')
 
 // 汕大账号信息
-global.account
-global.password
-global.years
-global.semester
-global.week
+global.account = wx.getStorageSync('account')
+global.password = wx.getStorageSync('password')
+global.years = wx.getStorageSync('years')
+global.semester = wx.getStorageSync('semester')
+global.week = wx.getStorageSync('week')
 
 global.showError = true
 global.baseurl = 'https://candycute.cn/'
@@ -23,20 +23,9 @@ App({
       return page.__route__ == pageName
     })
   },
-  init() {
-    global.token = wx.getStorageSync('token')
-    global.account = wx.getStorageSync('account')
-    global.password = wx.getStorageSync('password')
-
-    global.years = wx.getStorageSync('years')
-    global.semester = wx.getStorageSync('semester')
-    global.week = wx.getStorageSync('week')
-
-    console.log(global)
-  },
+ 
   onLaunch: function () {
     // 初始化
-    this.init()
 
     if (global.token && global.account) {
       console.log('已登录')
@@ -85,6 +74,18 @@ App({
             },
             success(res) {
               console.log(res)
+              if (global.showError && res.statusCode != '200') {
+                var errorMsg
+                if (res.data.error_msg) {
+                  errorMsg = res.data.error_msg
+                } else {
+                  errorMsg = '未知错误'
+                }
+                errorMsg += res.statusCode
+                _this.showError(errorMsg)
+                return
+              }
+              
               //更新登录信息
 
               // 1.更新是否绑定汕大账号
@@ -109,10 +110,10 @@ App({
           //登录态过期
           //清楚token
           console.log("登录过期")
-          global.token = '',
-            wx.removeStorage({
-              key: 'token'
-            })
+          // global.token = '',
+          //   wx.removeStorage({
+          //     key: 'token'
+          //   })
         }
       })
 

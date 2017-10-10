@@ -8,8 +8,8 @@
     <view class="weui-label">当前学年</view>
   </view>
   <view class="weui-cell__bd">
-    <picker bindchange="bindYearsChange" value="{{years.year_index-1}}" range="{{years.year_picker}}">
-      <view class="weui-select weui-select_in-select-after">{{years.year_picker[years.year_index-1]}}</view>
+    <picker bindchange="bindYearsChange" value="{{years.year_index}}" range="{{years.year_picker}}">
+      <view class="weui-select weui-select_in-select-after">{{years.year_picker[years.year_index]}}</view>
     </picker>
   </view>
 </view>

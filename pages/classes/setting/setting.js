@@ -30,7 +30,7 @@ Page({
 
   bindYearsChange(e) {
     let year_index = Number(e.detail.value)
-    global.years.year_index = year_index + 1
+    global.years.year_index = year_index
     wx.setStorage({
       key: 'years',
       data: global.years,
