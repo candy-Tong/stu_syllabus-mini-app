@@ -82,41 +82,28 @@ Page({
     var that = this
     var lessons = []
 
-    for (let i = 0; i < classes.length; i++) {
-      let classname = classes[i].name
+    for (var i = 0; i < classes.length; i++) {
+      var classname = classes[i].name
       classname = classname.replace(/\[.*\]/, '')
-      let room = classes[i].room
+      var room = classes[i].room
       room = room.replace('座', '')
       console.log(classname)
-      let classColor = color[i]
-      for (let j = 0; j < 7; j++) {
-        if (classes[i].days['w' + j] !== 'None') {   
+      var classColor = color[i]
+      for (var j = 0; j < 7; j++) {
+        if (classes[i].days['w' + j] !== 'None') {
 
+          //暂时不区分单双周
+
+          classes[i].days['w' + j] = classes[i].days['w' + j].replace('单', '')
+          classes[i].days['w' + j] = classes[i].days['w' + j].replace('双', '')
           let [weekBegin, weekEnd] = classes[i].duration.split('-')
           let week = []
           weekBegin = Number(weekBegin)
           weekEnd = Number(weekEnd)
-          
-          if (/单/u.test(classes[i].days['w' + j])){
-            classes[i].days['w' + j] = classes[i].days['w' + j].replace('单', '')
-            for (let i = weekBegin; i <= weekEnd; i++) {
-              if(i%2===1){
-                week.push(i)
-              }
-            }
-          } else if (/双/u.test(classes[i].days['w' + j])){
-            classes[i].days['w' + j] = classes[i].days['w' + j].replace('双', '')
-            for (let i = weekBegin; i <= weekEnd; i++) {
-              if (i % 2 === 0) {
-                week.push(i)
-              }
-            }
-          }else{
-            for (let i = weekBegin; i <= weekEnd; i++) {
-              week.push(i)
-            }
-          }         
-          console.log(week)
+          for (let i = weekBegin; i <= weekEnd; i++) {
+            week.push(i)
+          }
+
           lessons.push({
             left: j === 0 ? 7 : j,
             top: that.transformClassTime(classes[i].days['w' + j]),
