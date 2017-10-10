@@ -1,3 +1,4 @@
+var app = getApp()
 var color = require('../../util/color.js')
 Page({
   data: {
@@ -7,7 +8,7 @@ Page({
   },
   years: '',
   semester: NaN,
-  week:0,
+  week: 0,
 
   onLoad: function (options) {
     showWeek: false
@@ -24,30 +25,57 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
-    if (global.years.year_index !== this.years_index || global.semester.semester_index !== this.semester_index ) {
-      this.years_index = global.years.year_index
-      this.semester_index = global.semester.semester_index
-      let that = this
-      wx.request({
-        url: global.stuUrl + '/credit/api/v2.1/syllabus',
-        method: 'post',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        data: {
-          username: global.account,
-          password: global.password,
-          years: global.years.year_picker[global.years.year_index-1],
-          semester: global.semester.semester_index ,
-          submit: ' query'
-        },
-        success(res) {
-          var classes = res.data.data.classes
-          that.showClass(classes)
-        }
-      })
+    if (this.week !== global.week) {
+      this.weekChange(this.data.lessons)
     }
+    if (global.years.year_index !== this.years_index || global.semester.semester_index !== this.semester_index) {
+      this.refalshSyllabus()
+    }
+  },
+  weekChange(lessions){
+    if(!lessions){
+      return
+    }
+    this.week = global.week
+    let haveClass = []
+    for (let i = 0; i < lessions.length; i++) {
+      haveClass.push(lessions[i].week.includes(global.week))
+    }
+    console.log(haveClass)
+    this.setData({
+      haveClass
+    })
+  },
+
+  refalshSyllabus() {
+    this.years_index = global.years.year_index
+    this.semester_index = global.semester.semester_index
+    let that = this
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    wx.request({
+      url: global.stuUrl + '/credit/api/v2.1/syllabus',
+      method: 'post',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        username: global.account,
+        password: global.password,
+        years: global.years.year_picker[global.years.year_index - 1],
+        semester: global.semester.semester_index,
+        submit: ' query'
+      },
+      success(res) {
+        var classes = res.data.data.classes
+        that.showClass(classes)
+      },
+      complete(res) {
+        wx.hideLoading()
+      }
+    })
   },
 
   showClass(classes) {
@@ -68,6 +96,13 @@ Page({
 
           classes[i].days['w' + j] = classes[i].days['w' + j].replace('单', '')
           classes[i].days['w' + j] = classes[i].days['w' + j].replace('双', '')
+          let [weekBegin, weekEnd] = classes[i].duration.split('-')
+          let week = []
+          weekBegin = Number(weekBegin)
+          weekEnd = Number(weekEnd)
+          for (let i = weekBegin; i <= weekEnd; i++) {
+            week.push(i)
+          }
 
           lessons.push({
             left: j === 0 ? 7 : j,
@@ -75,12 +110,14 @@ Page({
             height: classes[i].days['w' + j].length,
             color: classColor,
             classname,
-            room
+            room,
+            week
           })
 
         }
       }
     }
+    this.weekChange(lessons)
     this.setData({
       lessons
     })
@@ -112,6 +149,8 @@ Page({
    */
   onPullDownRefresh() {
     wx.stopPullDownRefresh()
+
+    let that = this
     wx.showActionSheet({
       itemList: [
         '刷新课表',
@@ -120,13 +159,16 @@ Page({
       success: function (res) {
         if (!res.cancel) {
           console.log(res.tapIndex)
-          if (res.tapIndex===1){
+
+          if (res.tapIndex === 0) {
+            that.refalshSyllabus()
+          } else if (res.tapIndex === 1) {
             wx.navigateTo({
               url: 'setting/setting'
             })
           }
         }
-        
+
       }
     })
   },
