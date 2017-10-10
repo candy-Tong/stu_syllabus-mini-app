@@ -1,8 +1,9 @@
 {
   "pages": [
+    "pages/me/me",
+    
     "pages/classes/classes",
     "pages/classes/setting/setting",
-    "pages/me/me", 
     
     "pages/me/account/account",
     "pages/oa/oa",

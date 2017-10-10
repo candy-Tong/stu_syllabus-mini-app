@@ -109,10 +109,10 @@ App({
           //登录态过期
           //清楚token
           console.log("登录过期")
-          global.token = '',
-            wx.removeStorage({
-              key: 'token'
-            })
+          // global.token = ''
+          // wx.removeStorage({
+          //   key: 'token'
+          // })
         }
       })
 
@@ -280,7 +280,7 @@ App({
       semester_index
     }
     // 设为第一周
-    global.week=1
+    global.week = 1
 
     // 写入缓存
 
