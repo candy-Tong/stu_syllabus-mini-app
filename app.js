@@ -366,7 +366,23 @@ App({
     return token
   },
 
-
+  signout(){
+    global.token=''
+    wx.removeStorageSync('token')
+    wx.showModal({
+      title: '提示',
+      content: '校园网密码已更改，请重新登录',
+      confirmColor: "#2d8cf0",
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          wx.switchTab({
+            url: '/pages/me/me'
+          })
+        }
+      }
+    })
+  },
 
   contains: function (arr, obj) {
     var i = arr.length;

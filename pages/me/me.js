@@ -46,7 +46,7 @@ Page({
             that.setData({
               years: global.years,
               semester: global.semester,
-              is_login: true
+              isLogin: true
             })
           }
         },
@@ -118,7 +118,7 @@ Page({
       })
     }
 
-    if (this.token !== global.token) {
+    if (global.token && this.token !== global.token) {
       this.token = global.token
       var that = this
       var callback = [
@@ -138,7 +138,7 @@ Page({
             that.setData({
               years: global.years,
               semester: global.semester,
-              is_login: true
+              isLogin: true
             })
           }
         },
@@ -153,6 +153,12 @@ Page({
       ]
       // 检查是否登录
       app.checkLogin(callback)
+    }
+    if (!global.token) {
+      console.log('未登录')
+      this.setData({
+        isLogin: false
+      })
     }
   },
 

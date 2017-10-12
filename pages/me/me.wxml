@@ -20,7 +20,7 @@
             <view class="weui-cell__ft">{{account}}</view>
           </view>
 
-          <block wx:if="{{is_login}}">
+          <block wx:if="{{isLogin}}">
             <view class="weui-cell weui-cell_access">
               <view class="weui-cell__bd">当前学年</view>
               <view class="weui-cell__bd">

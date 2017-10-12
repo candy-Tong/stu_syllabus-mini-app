@@ -158,6 +158,8 @@ Page({
           console.log(res.tapIndex)
 
           if (res.tapIndex === 0) {
+            app.signout()
+            return
             that.refalshSyllabus()
           } else if (res.tapIndex === 1) {
             wx.navigateTo({
