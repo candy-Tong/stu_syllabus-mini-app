@@ -30,7 +30,7 @@ Page({
         {
           func: function () {
             wx.hideLoading()
-            if (global.account) {
+            if (global.account && global.password) {
               app.getUserInfo(function (userInfo) {
                 //更新数据
                 that.setData({
@@ -45,8 +45,7 @@ Page({
           func: function () {
             that.setData({
               years: global.years,
-              semester: global.semester,
-              isLogin: true
+              semester: global.semester
             })
           }
         },
@@ -111,6 +110,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    console.log(global)
     // 监听当前用户的改变
     if (this.data.account != global.account) {
       this.setData({
@@ -137,8 +137,7 @@ Page({
           func: function () {
             that.setData({
               years: global.years,
-              semester: global.semester,
-              isLogin: true
+              semester: global.semester
             })
           }
         },

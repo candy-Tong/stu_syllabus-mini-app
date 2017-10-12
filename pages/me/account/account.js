@@ -21,26 +21,31 @@ Page({
       },
       success(res) {
         console.log(res)
-
-        // 如果成功
-        if (true) {
-          // 缓存下来
-          wx.setStorage({
-            key: 'account',
-            data: that.account,
-          })
-          wx.setStorage({
-            key: 'password',
-            data: that.password,
-          })
-          global.account = that.account
-          global.password=that.password
-          wx.navigateBack({
-            delta: 1
-          })
-
+        if (res.statusCode != '200') {
+          let errorMsg
+          if (res.data.result.error_msg) {
+            errorMsg = res.data.result.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          app.showError(errorMsg)
+          return
         }
 
+        let callback = [
+          {
+            func: function () {
+              wx.navigateBack({
+                delta: 1
+              })
+            }
+          }
+        ]
+        // 缓存下来
+        app.updateLoginMsg({
+          account: that.account,
+          password: that.password
+        }, callback)
       }
     })
   },
@@ -58,7 +63,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    if(global.account){
+      this.account=global.account
+      this.setData({
+        accountInputDisabled:true,
+        account:global.account
+      })
+    }
   },
 
   /**
@@ -86,7 +97,10 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    if (!global.password) {
+      console.log('注销账号')
+      app.signout()
+    }
   },
 
   /**

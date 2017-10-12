@@ -1,5 +1,0 @@
-<!--pages/oa/detail/detail.wxml-->
-<import src="/wxParse/wxParse.wxml" />
-<view class='panel'>
-  <template is="wxParse" data="{{wxParseData:article.nodes}}" />
-</view>

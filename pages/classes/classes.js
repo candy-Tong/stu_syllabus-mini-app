@@ -25,22 +25,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log(global.token)
-    if (!global.token) {
-    
-      wx.showModal({
-        title: '提示',
-        content: '未登录,是否跳转',
-        showCancel: false,
-        confirmColor: "#2d8cf0",
-        success: function (res) {
-          if (res.confirm) {
-            console.log('用户点击确定')
-            wx.switchTab({
-              url: '/pages/me/me'
-            })
-          }
-        }
+    // console.log(global)
+    if (!global.account||!global.password) {
+      wx.switchTab({
+        url: '/pages/me/me'
       })
       return
     }
@@ -77,7 +65,42 @@ Page({
         submit: ' query'
       },
       success(res) {
-        var classes = res.data
+        if (res.statusCode != '200') {
+          let errorMsg
+
+          if (res.data.ERROR === "the password is wrong") {         
+            app.signout()
+            wx.showModal({
+              title: '错误',
+              content: '校园网密码已更改，请重新登录',
+              showCancel: false,
+              confirmColor: "#2d8cf0",
+              success: function (res) {
+                if (res.confirm) {
+                  console.log('用户点击确定')
+                  wx.switchTab({
+                    url: '/pages/me/me',
+                    success: function (res) { }
+                  })
+                }
+              }
+            })
+            
+          } else {
+            if (res.data.result.error_msg) {
+              errorMsg = res.data.result.error_msg
+            } else {
+              errorMsg = '未知错误'
+            }
+            
+            
+          }
+          return
+        }
+
+        
+
+        let classes = res.data
         that.showClass(classes)
       },
       complete(res) {
@@ -158,8 +181,6 @@ Page({
           console.log(res.tapIndex)
 
           if (res.tapIndex === 0) {
-            app.signout()
-            return
             that.refalshSyllabus()
           } else if (res.tapIndex === 1) {
             wx.navigateTo({

@@ -23,10 +23,10 @@ App({
       return page.__route__ == pageName
     })
   },
- 
+
   onLaunch: function () {
     // 初始化
-
+    console.log(global)
     if (global.token && global.account) {
       console.log('已登录')
       this.autoLogin()
@@ -60,7 +60,7 @@ App({
 
   // 自动登录，更新信息
   autoLogin() {
-    var _this = this
+    var that = this
     if (global.token) {
       // Do something with return value
       console.log("读取缓存，获取token成功")
@@ -74,18 +74,29 @@ App({
             },
             success(res) {
               console.log(res)
-              if (global.showError && res.statusCode != '200') {
-                var errorMsg
-                if (res.data.error_msg) {
-                  errorMsg = res.data.error_msg
+              if (res.statusCode != '200') {
+                let errorMsg
+
+                if (res.data.error_code === 1) {
+                  that.updateLoginMsg({
+                    account: res.data.result.account
+                  })
+                  that.signout()
+                  wx.switchTab({
+                    url: '/pages/me/me',
+                    success: function (res) { }
+                  })
                 } else {
-                  errorMsg = '未知错误'
+                  if (res.data.result.error_msg) {
+                    errorMsg = res.data.result.error_msg
+                  } else {
+                    errorMsg = '未知错误'
+                  }
+                  that.showError(errorMsg)
                 }
-                errorMsg += res.statusCode
-                _this.showError(errorMsg)
                 return
               }
-              
+
               //更新登录信息
 
               // 1.更新是否绑定汕大账号
@@ -108,12 +119,8 @@ App({
         },
         fail: function () {
           //登录态过期
-          //清楚token
           console.log("登录过期")
-          // global.token = '',
-          //   wx.removeStorage({
-          //     key: 'token'
-          //   })
+
         }
       })
 
@@ -125,7 +132,7 @@ App({
   },
 
   first_login(e, callbackObject) {
-    var _this = this
+    var that = this
     var userinfo = e.detail
     var callbackObj = callbackObject
     wx.login({
@@ -151,17 +158,27 @@ App({
             },
             success: function (res) {
               console.log(res)
-              wx.hideLoading()
 
-              if (global.showError && res.statusCode != '200') {
-                var errorMsg
-                if (res.data.error_msg) {
-                  errorMsg = res.data.error_msg
+              if (res.statusCode != '200') {
+                let errorMsg
+
+                if (res.data.error_code === 1) {
+                  that.updateLoginMsg({
+                    account: res.data.result.account,
+                    token: res.data.result.token
+                  })
+                  wx.navigateTo({
+                    url: '/pages/me/account/account',
+                    success: function (res) { }
+                  })
                 } else {
-                  errorMsg = '未知错误'
+                  if (res.data.result.error_msg) {
+                    errorMsg = res.data.result.error_msg
+                  } else {
+                    errorMsg = '未知错误'
+                  }
+                  that.showError(errorMsg)
                 }
-                errorMsg += res.statusCode
-                _this.showError(errorMsg)
                 return
               }
 
@@ -171,7 +188,7 @@ App({
 
               // 是否绑定汕大账号
 
-              if (!res.data.result.account) {
+              if (!res.data.result.account || !res.data.result.password) {
                 wx.navigateTo({
                   url: '/pages/me/account/account',
                   success: function (res) { }
@@ -188,7 +205,7 @@ App({
                   data: global.password,
                 })
               }
-              _this.updateLoginMsg(res.data, callbackObject)
+              that.updateLoginMsg(res.data.result, callbackObject)
 
             }, fail(res) {
               console.log(res)
@@ -213,87 +230,62 @@ App({
       },
       fail: function () {
         console.log("login 失败")
+      },
+      complete() {
+        wx.hideLoading()
       }
     })
   },
 
-  error_callback(callBackObject) {
-    // 错误回调
-    console.log("登录错误回调开始")
-    if (typeof callBackObject == 'object') {
-      callBackObject.forEach(function (item, index, object) {
-        if (item.isError && item.func) {
-          if (item.parm) {
-            item.func(item.parm)
-          } else {
-            item.func()
-          }
-        }
-      })
-    }
-  },
+
 
   updateLoginMsg(data, callBackObject) {
-    if (!data.result || !data.result.token) {
-      console.log("发生错误，token不存在")
-      this.error_callback(callBackObject)
-    }
-
-
     // 更新数据
-    let token = data.result.token
 
-    global.token = token
-    global.account = data.result.account
-    global.password = data.result.password
-
+    for (let index in data) {
+      global[index] = data[index]
+      wx.setStorageSync(index, global[index])
+    }
     // 初始化学期信息
-    // 设为当前学年
-    let enrollment_year = global.account.substring(0, 2)
-    let year_picker = []
-    for (let i = 0; i < 6; i++) {
-      year_picker.push('20' + (Number(enrollment_year) + i) + '-' + '20' + (Number(enrollment_year) + i + 1))
-    }
-    // 找出当前学年、学期的picker index
-    let date = new Date()
-    let this_year = date.getFullYear() + '-' + (Number(date.getFullYear()) + 1)
-    let year_index = year_picker.findIndex(function (year) {
-      return year === this_year
-    })
-    global.years = {
-      enrollment_year,
-      year_picker,
-      year_index
-    }
-    // 设为当前学期
-    let semester_picker = ['秋季学期', '春季学期', '夏季学期']
-    let semester_index
-    let this_month = date.getMonth + 1
-    if (this_month < 8) {
-      semester_index = 2
-    } else if (this_month < 9) {
-      semester_index = 3
-    } else {
-      semester_index = 1
-    }
-    global.semester = {
-      semester_picker,
-      semester_index
-    }
-    // 设为第一周
-    global.week=1
-
-    // 写入缓存
-
-    try {
-      wx.setStorageSync('token', global.token)
-      wx.setStorageSync('account', global.account)
-      wx.setStorageSync('password', global.password)
+    if (data.account) {
+      // 初始化学期信息
+      // 设为当前学年
+      let enrollment_year = global.account.substring(0, 2)
+      let year_picker = []
+      for (let i = 0; i < 6; i++) {
+        year_picker.push('20' + (Number(enrollment_year) + i) + '-' + '20' + (Number(enrollment_year) + i + 1))
+      }
+      // 找出当前学年、学期的picker index
+      let date = new Date()
+      let this_year = date.getFullYear() + '-' + (Number(date.getFullYear()) + 1)
+      let year_index = year_picker.findIndex(function (year) {
+        return year === this_year
+      })
+      global.years = {
+        enrollment_year,
+        year_picker,
+        year_index
+      }
       wx.setStorageSync('years', global.years)
+      // 设为当前学期
+      let semester_picker = ['秋季学期', '春季学期', '夏季学期']
+      let semester_index
+      let this_month = date.getMonth + 1
+      if (this_month < 8) {
+        semester_index = 2
+      } else if (this_month < 9) {
+        semester_index = 3
+      } else {
+        semester_index = 1
+      }
+      global.semester = {
+        semester_picker,
+        semester_index
+      }
       wx.setStorageSync('semester', global.semester)
+      // 设为第一周
+      global.week = 1
       wx.setStorageSync('week', global.week)
-    } catch (e) {
-      console.log("缓存token发生错误")
     }
 
     console.log("登录回调开始")
@@ -348,40 +340,12 @@ App({
   },
 
 
-  // 很可能会放弃使用，但目前很多还是依赖这个
-  getToken() {
-    try {
-      var token = wx.getStorageSync('token')
-      if (token) {
-        // Do something with return value
-        // console.log("token:"+token)
-      } else {
-        console.log("token为空")
-      }
-    } catch (e) {
-      // Do something when catch error
-      console.log("获取token发生错误")
-      console.log(e)
-    }
-    return token
-  },
-
-  signout(){
-    global.token=''
+  signout() {
+    global.token = ''
     wx.removeStorageSync('token')
-    wx.showModal({
-      title: '提示',
-      content: '校园网密码已更改，请重新登录',
-      confirmColor: "#2d8cf0",
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-          wx.switchTab({
-            url: '/pages/me/me'
-          })
-        }
-      }
-    })
+    global.password = ''
+    wx.removeStorageSync('password')
+    console.log('注销登录')
   },
 
   contains: function (arr, obj) {
@@ -399,6 +363,7 @@ App({
       title: '错误',
       content: errorMsg,
       showCancel: false,
+      confirmColor: "#2d8cf0",
       success: function (res) {
         // if (res.confirm) {
         //   console.log('用户点击确定')

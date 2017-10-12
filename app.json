@@ -4,9 +4,7 @@
     "pages/classes/setting/setting",
     "pages/me/me", 
     
-    "pages/me/account/account",
-    "pages/oa/oa",
-    "pages/oa/detail/detail"
+    "pages/me/account/account"
   ],
   "window": {
     "backgroundTextStyle": "light",
