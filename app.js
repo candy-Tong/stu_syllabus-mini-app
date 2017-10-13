@@ -76,24 +76,24 @@ App({
               console.log(res)
               if (res.statusCode != '200') {
                 let errorMsg
-
-                if (res.data.error_code === 1) {
-                  that.updateLoginMsg({
-                    account: res.data.result.account
-                  })
-                  that.signout()
-                  wx.switchTab({
-                    url: '/pages/me/me',
-                    success: function (res) { }
-                  })
-                } else {
-                  if (res.data.result.error_msg) {
-                    errorMsg = res.data.result.error_msg
-                  } else {
-                    errorMsg = '未知错误'
-                  }
-                  that.showError(errorMsg)
-                }
+                // 这里暂不检查，因为查询课表api检查了
+                // if (res.data.error_code === 1) {
+                //   that.updateLoginMsg({
+                //     account: res.data.result.account
+                //   })
+                //   that.signout()
+                //   wx.switchTab({
+                //     url: '/pages/me/me',
+                //     success: function (res) { }
+                //   })
+                // } else {
+                //   if (res.data.result.error_msg) {
+                //     errorMsg = res.data.result.error_msg
+                //   } else {
+                //     errorMsg = '未知错误'
+                //   }
+                //   that.showError(errorMsg)
+                // }
                 return
               }
 
