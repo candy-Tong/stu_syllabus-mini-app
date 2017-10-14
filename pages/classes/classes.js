@@ -42,6 +42,13 @@ Page({
     }
   },
 
+  showClassDetail(e){
+    let lessonJson = JSON.stringify(this.data.classes[e.currentTarget.dataset.index])
+    wx.navigateTo({
+      url: 'detail/detail?lesson='+lessonJson
+    })
+  },
+
 
   refalshSyllabus() {
     this.years_index = global.years.year_index
@@ -91,9 +98,7 @@ Page({
               errorMsg = res.data.result.error_msg
             } else {
               errorMsg = '未知错误'
-            }
-            
-            
+            }            
           }
           return
         }
@@ -127,6 +132,7 @@ Page({
         classes[i].class_schedule[j]
 
         lessons.push({
+          lessonIndex:i,
           left: classes[i].class_schedule[j].day_in_week === 0 ? 7 : classes[i].class_schedule[j].day_in_week,
           top: that.transformClassTime(classes[i].class_schedule[j].time),
           height: classes[i].class_schedule[j].time.length,
@@ -139,7 +145,8 @@ Page({
       
     }
     this.setData({
-      lessons
+      lessons,
+      classes
     })
 
   },

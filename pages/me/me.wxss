@@ -10,10 +10,11 @@
   background-color: white;
   text-align: center;
   line-height: 500rpx;
-  color:#999999;
-  border-radius: 0
+  color: #999;
+  border-radius: 0;
 }
-.login_button:after{
+
+.login_button:after {
   border-radius: 0;
   border: 0;
 }
@@ -45,4 +46,41 @@
 
 .option-item {
   color: #495060;
+}
+
+button {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  box-sizing: 0;
+  text-align: left;
+  text-decoration: none;
+  border-radius: 0;
+  line-height: 1.41176471;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+  background-color: #fff;
+  font-size: 17px;
+  color:#495060;
+}
+
+button::after {
+  content: "";
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0 solid rgba(0, 0, 0, 0.2);
+  -webkit-transform: scale(0.5);
+  transform: scale(0.5);
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  box-sizing: border-box;
+  border-radius: 10px;
 }

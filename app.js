@@ -98,18 +98,12 @@ App({
               }
 
               //更新登录信息
-
-              // 1.更新是否绑定汕大账号
-              global.account = res.data.result.account
-              global.password = res.data.result.password
-              wx.setStorage({
-                key: 'account',
-                data: global.account,
+              that.updateLoginMsg({
+                account: res.data.result.account,
+                password: res.data.result.password
               })
-              wx.setStorage({
-                key: 'password',
-                data: global.password,
-              })
+             
+              
             },
             fail(res) {
               console.log('auto login失败，可能超时')

@@ -57,5 +57,6 @@
   font-size: 20rpx;
   text-align: center;
   color: #fff;
-  opacity:0.7
+  opacity:0.7;
+  z-index: 100;
 }

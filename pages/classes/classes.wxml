@@ -7,7 +7,7 @@
       <view class="table-grid" wx:for='{{week}}' wx:key='*this' hover-class="weui-grid_active">
         <view class="week cell">{{item}}</view>
       </view>
-      <view class='class-cell' wx:if="{{item.week[curWeek-1]!=0}}" wx:for="{{lessons}}" wx:key="{{index}}" style='position:absolute;top:{{item.top*7.14+0.25}}%;left:{{item.left*12.5+0.25}}%;width:12%;height:{{item.height*7.14-0.5}}%;background-color:{{item.color}};border-radius:10rpx'>
+      <view bindtap='showClassDetail' data-index='{{item.lessonIndex}}' class='class-cell' wx:if="{{item.week[curWeek-1]!=0}}" wx:for="{{lessons}}" wx:key="{{index}}" style='position:absolute;top:{{item.top*7.14+0.25}}%;left:{{item.left*12.5+0.25}}%;width:12%;height:{{item.height*7.14-0.5}}%;background-color:{{item.color}};border-radius:10rpx'>
     
         <view class="classname">{{item.classname}}</view>
         <view>@{{item.room}}</view>

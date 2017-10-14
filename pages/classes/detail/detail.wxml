@@ -1,0 +1,87 @@
+<!--pages/classes/detail/detail.wxml-->
+<view class="weui-panel">
+  <view class="weui-panel__bd">
+    <view class="weui-media-box weui-media-box_small-appmsg">
+      <view class="weui-cells weui-cells_in-small-appmsg">
+        <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__hd">
+            <image src="{{icon20}}" style="width: 20px;height: 20px;margin-right: 5px" />
+          </view>
+          <view class="weui-cell__bd weui-cell_primary">
+            <view>
+              <text class='item-key'>课程</text>
+              <text class='item-value'>{{lesson.name}}</text>
+            </view>
+
+          </view>
+
+          <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
+        </view>
+
+        <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__hd">
+            <image src="{{icon20}}" style="width: 20px;height: 20px;margin-right: 5px" />
+          </view>
+          <view class="weui-cell__bd weui-cell_primary">
+            <view>
+              <text class='item-key'>班号</text>
+              <text class='item-value'>{{lesson.id}}</text>
+            </view>
+          </view>
+          <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
+        </view>
+        <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__hd">
+            <image src="{{icon20}}" style="width: 20px;height: 20px;margin-right: 5px" />
+          </view>
+          <view class="weui-cell__bd weui-cell_primary">
+            <view>
+              <text class='item-key'>教师</text>
+              <text class='item-value'>{{lesson.teacher}}</text>
+            </view>
+          </view>
+          <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
+        </view>
+
+        <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__hd">
+            <image src="{{icon20}}" style="width: 20px;height: 20px;margin-right: 5px" />
+          </view>
+          <view class="weui-cell__bd weui-cell_primary">
+            <view>
+              <text class='item-key'>课室</text>
+              <text class='item-value'>{{lesson.room}}</text>
+            </view>
+          </view>
+          <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
+        </view>
+
+        <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__hd">
+            <image src="{{icon20}}" style="width: 20px;height: 20px;margin-right: 5px" />
+          </view>
+          <view class="weui-cell__bd weui-cell_primary">
+            <view>
+              <text class='item-key'>学分</text>
+              <text class='item-value'> {{lesson.credit}}</text>
+            </view>
+          </view>
+          <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
+        </view>
+
+        <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <view class="weui-cell__hd">
+            <image src="{{icon20}}" style="width: 20px;height: 20px;margin-right: 5px" />
+          </view>
+          <view class="weui-cell__bd weui-cell_primary">
+            <view>
+              <text class='item-key'>周数</text>
+              <text class='item-value'>{{lesson.duration}}</text>
+            </view>
+          </view>
+          <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

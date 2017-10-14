@@ -1,0 +1,5 @@
+/* pages/classes/detail/detail.wxss */
+.item-value{
+  margin-left: 40rpx;
+  color: #1d86ae ;
+}

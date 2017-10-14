@@ -1,10 +1,12 @@
 {
   "pages": [
-    "pages/classes/classes",
-    "pages/classes/setting/setting",
-    "pages/me/me", 
     
+    "pages/classes/classes",
+    "pages/classes/detail/detail",
+    "pages/classes/setting/setting",
+    "pages/me/me",
     "pages/me/account/account"
+    
   ],
   "window": {
     "backgroundTextStyle": "light",
