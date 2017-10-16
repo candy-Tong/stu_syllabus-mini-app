@@ -23,8 +23,8 @@ Page({
         console.log(res)
         if (res.statusCode != '200') {
           let errorMsg
-          if (res.data.result.error_msg) {
-            errorMsg = res.data.result.error_msg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
           } else {
             errorMsg = '未知错误'
           }

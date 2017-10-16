@@ -301,9 +301,9 @@ App({
   checkLogin(callBackObject) {
     let token = global.token
     let account = global.account
-
+    let password =global.password
     // 必须有token，并且绑定了汕大账号才算登录
-    if (token && account) {
+    if (token && account && password) {
       //已登录
       console.log("已登录，回调开始")
 
