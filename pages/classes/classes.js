@@ -243,6 +243,7 @@ Page({
       wx.showModal({
         title: '提示',
         content: '请等待课表加载完毕',
+        showCancel:false
       })
       return
     }
@@ -250,10 +251,10 @@ Page({
     wx.showShareMenu({
       withShareTicket: true
     })
-    
+
     return {
-      title: global.userInfo.nickName+'的课表',
-      path: '/pages/classes/share/share?nickName=' + global.userInfo.nickName+'&week=' + global.week + '&classes=' + JSON.stringify(that.classes),
+      title: global.userInfo.nickName + '的课表',
+      path: '/pages/classes/share/share?nickName=' + global.userInfo.nickName + '&week=' + global.week + '&classes=' + JSON.stringify(that.classes),
       success: function (res) {
         // 转发成功
         console.log(res)
@@ -262,6 +263,7 @@ Page({
         // 转发失败
       }
     }
+    
 
   },
 });
