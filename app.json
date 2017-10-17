@@ -2,10 +2,12 @@
   "pages": [
     
     "pages/classes/classes",
+    "pages/classes/share/share",
     "pages/classes/detail/detail",
     "pages/classes/setting/setting",
     "pages/me/me",
     "pages/me/account/account"
+
     
   ],
   "window": {

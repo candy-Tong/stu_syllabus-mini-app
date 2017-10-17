@@ -12,7 +12,7 @@ global.week = wx.getStorageSync('week')
 global.showError = true
 global.baseurl = 'https://candycute.cn/'
 global.stuUrl = 'https://class.stuapps.com'
-global.userInfo = null
+
 
 
 App({
@@ -26,6 +26,7 @@ App({
 
   onLaunch: function () {
     // 初始化
+    this.getUserInfo()    // global.userInfo
     console.log(global)
     if (global.token && global.account) {
       console.log('已登录')

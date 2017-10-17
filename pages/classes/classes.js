@@ -11,7 +11,7 @@ Page({
   week: 0,
 
   onLoad: function (options) {
-    showWeek: false
+  
   },
 
   /**
@@ -24,9 +24,13 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    // console.log(global)
-    if (!global.account||!global.password) {
+  onShow: function (options) {
+  
+    wx.setNavigationBarTitle({
+      title: '第'+global.week+'周'
+    })
+
+    if (!global.account || !global.password) {
       wx.switchTab({
         url: '/pages/me/me'
       })
@@ -34,7 +38,7 @@ Page({
     }
     if (this.data.curWeek !== global.week) {
       this.setData({
-        curWeek:global.week
+        curWeek: global.week
       })
     }
     if (global.years.year_index !== this.years_index || global.semester.semester_index !== this.semester_index) {
@@ -42,10 +46,10 @@ Page({
     }
   },
 
-  showClassDetail(e){
+  showClassDetail(e) {
     let lessonJson = JSON.stringify(this.data.classes[e.currentTarget.dataset.index])
     wx.navigateTo({
-      url: 'detail/detail?lesson='+lessonJson
+      url: 'detail/detail?lesson=' + lessonJson
     })
   },
 
@@ -75,7 +79,7 @@ Page({
         if (res.statusCode != '200') {
           let errorMsg
 
-          if (res.data.ERROR === "the password is wrong") {         
+          if (res.data.ERROR === "the password is wrong") {
             app.signout()
             wx.showModal({
               title: '错误',
@@ -92,20 +96,22 @@ Page({
                 }
               }
             })
-            
+
           } else {
             if (res.data.result.error_msg) {
               errorMsg = res.data.result.error_msg
             } else {
               errorMsg = '未知错误'
-            }            
+            }
           }
           return
         }
 
-        
+
 
         let classes = res.data
+        that.classes = classes
+              
         that.showClass(classes)
       },
       complete(res) {
@@ -124,32 +130,56 @@ Page({
       classname = classname.replace(/\[.*\]/, '')
       var room = classes[i].room
       room = room.replace('座', '')
-      console.log(classname)
+      // console.log(classname)
       var classColor = color[i]
 
       for (let j in classes[i].class_schedule) {
-        console.log(j)
-        classes[i].class_schedule[j]
+        // console.log(j)
+        let timeList = that.splitTime(classes[i].class_schedule[j].time)
+        // console.log(timeList)
+        for (let index in timeList) {
 
-        lessons.push({
-          lessonIndex:i,
-          left: classes[i].class_schedule[j].day_in_week === 0 ? 7 : classes[i].class_schedule[j].day_in_week,
-          top: that.transformClassTime(classes[i].class_schedule[j].time),
-          height: classes[i].class_schedule[j].time.length,
-          color: classColor,
-          classname,
-          room,
-          week: classes[i].class_schedule[j].weeks
-        })
+          lessons.push({
+            lessonIndex: i,
+            left: classes[i].class_schedule[j].day_in_week === 0 ? 7 : classes[i].class_schedule[j].day_in_week,
+            top: that.transformClassTime(timeList[index]),
+            height: timeList[index].length,
+            color: classColor,
+            classname,
+            room,
+            week: classes[i].class_schedule[j].weeks
+          })
+        }
+
       }
-      
+
     }
     this.setData({
       lessons,
       classes
     })
-
   },
+  splitTime(time) {
+    let timeList = []
+    let standardTime = '1234567890ABC'
+    for (var i = 1; i < time.length; i++) {
+      let subStr = time.substring(0, i)
+      if (standardTime.indexOf(subStr) != -1) {
+        continue
+      } else {
+        // 需要分割
+        timeList.push(time.substring(0, i - 1))
+        let item = this.splitTime(time.substring(i - 1))
+        timeList = timeList.concat(item)
+        break
+      }
+    }
+    if (timeList.length == 0) {
+      timeList.push(time)
+    }
+    return timeList
+  },
+
   transformClassTime(timeStr) {
 
     var top = Number(timeStr.charAt(0))
@@ -167,7 +197,7 @@ Page({
 
       top = 10
     }
-    console.log(top)
+    // console.log(top)
     return top
   },
 
@@ -177,7 +207,6 @@ Page({
   onPullDownRefresh() {
     wx.stopPullDownRefresh()
 
-    let that = this
     wx.showActionSheet({
       itemList: [
         '刷新课表',
@@ -203,6 +232,36 @@ Page({
  * 页面上拉触底事件的处理函数
  */
   onReachBottom: function () {
+
+  },
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function (res) {
+
+    if(!this.classes){
+      wx.showModal({
+        title: '提示',
+        content: '请等待课表加载完毕',
+      })
+      return
+    }
+    let that=this
+    wx.showShareMenu({
+      withShareTicket: true
+    })
+    
+    return {
+      title: global.userInfo.nickName+'的课表',
+      path: '/pages/classes/share/share?nickName=' + global.userInfo.nickName+'&week=' + global.week + '&classes=' + JSON.stringify(that.classes),
+      success: function (res) {
+        // 转发成功
+        console.log(res)
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
 
   },
 });

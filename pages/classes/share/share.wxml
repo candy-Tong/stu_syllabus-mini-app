@@ -1,0 +1,27 @@
+<view class="page">
+  <!-- <view class="week_selector page__bd_spacing" wx:if="{{showWeek}}">
+    <slider show-value value="50" />
+  </view> -->
+  <view class="weui-grids" style='position:relative'>
+    <view class='row'>
+      <view class="table-grid" wx:for='{{week}}' wx:key='*this' hover-class="weui-grid_active">
+        <view class="week cell">{{item}}</view>
+      </view>
+      <view bindtap='showClassDetail' data-index='{{item.lessonIndex}}' class='class-cell' hidden="{{item.week[curWeek-1]==0}}" wx:for="{{lessons}}" wx:key="{{index}}" style='position:absolute;top:{{item.top*7.14+0.25}}%;left:{{item.left*12.5+0.25}}%;width:12%;height:{{item.height*7.14-0.5}}%;background-color:{{item.color}};border-radius:10rpx'>
+    
+        <view class="classname">{{item.classname}}</view>
+        <view>@{{item.room}}</view>
+      </view>
+    </view>
+
+    <view style='position: relative'>
+      <view class='row' wx:for="{{times}}" wx:key="*this">
+        <view class="table-grid" hover-class="weui-grid_active">
+          <view class="cell">{{item}}</view>
+        </view>
+      </view>
+
+    </view>
+  </view>
+
+</view>
