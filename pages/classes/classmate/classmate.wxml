@@ -1,0 +1,13 @@
+<!--pages/classes/classmate/classmate.wxml-->
+<view class="weui-panel weui-panel_access">
+  <view class="weui-panel__hd">同班同学</view>
+  <view class="weui-panel__bd">
+    <block wx:for="{{class_info.student}}" wx:key="{{index}}">
+      <view class="weui-media-box weui-media-box_text">
+        <view class="weui-media-box__title weui-media-box__title_in-text">{{item.name}}</view>
+        <view class="weui-media-box__desc">{{item.number}} </view>
+        <view class="weui-media-box__desc">{{item.major}}</view>
+      </view>
+    </block>
+  </view>
+</view>

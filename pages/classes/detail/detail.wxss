@@ -3,3 +3,6 @@
   margin-left: 40rpx;
   color: #1d86ae ;
 }
+.weui-cell::before{
+  border-top: 0
+}

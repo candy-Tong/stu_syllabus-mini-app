@@ -1,0 +1,10 @@
+/* pages/me/update_log/update_log.wxss */
+
+.log-detail {
+  color: #999;
+  font-size: 13px;
+  line-height: 1.2;
+  margin-bottom: 10rpx;
+  text-indent: 1em;
+  display: -webkit-box;
+}

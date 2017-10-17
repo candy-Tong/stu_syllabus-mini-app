@@ -1,0 +1,37 @@
+<!--pages/about_us/about_us.wxml-->
+<view class='logo-wrapper'>
+  <image class='logo' src="/image/stu_syllabus.jpg" mode='aspectFit'></image>
+  <view class='name'>汕大课程表</view>
+</view>
+
+
+<view class="weui-panel__hd">关于我们</view>
+<view class="weui-panel__bd">
+  <view class="weui-media-box weui-media-box_text">
+     <!-- <view class="weui-media-box__title weui-media-box__title_in-text">汕大课程表</view>  -->
+    <view class="weui-media-box__desc" style='text-indent:2em'>小程序版的汕大课程表，希望大家多多支持哦</view>
+  </view>
+  
+</view>
+
+
+
+
+<view class="weui-panel__hd">开发人员</view>
+<view class="weui-panel__bd">
+  <view class="weui-media-box weui-media-box_small-appmsg">
+    <view class="weui-cells weui-cells_in-small-appmsg">
+      <view wx:for="{{developer}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__hd">
+          <image src="{{item.avatarUrl}}" style="width: 25px;height: 25px;margin-right: 10rpx" />
+        </view>
+        <view class="weui-cell__bd weui-cell_primary">
+          <view>{{item.name}}</view>
+        </view>
+        <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
+      </view>
+
+    </view>
+  </view>
+
+</view>

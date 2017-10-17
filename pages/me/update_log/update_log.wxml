@@ -1,0 +1,22 @@
+<!--pages/me/update_log/update_log.wxml-->
+<view class="weui-panel">
+  <block wx:for="{{log}}" wx:key="{{index}}">
+    <view class="weui-panel__hd">{{item.version}}</view>
+    <view class="weui-panel__bd">
+      <view class="weui-media-box weui-media-box_text">
+        <block wx:for="{{item.content}}" wx:key="{{index}}">
+          <view class="weui-media-box__title weui-media-box__title_in-text">{{item.title}}</view>
+          <view class=" log-detail">{{item.detail?item.detail:'~~~~~~~~~~~~'}}</view>
+        </block>
+
+
+
+        <view class="weui-media-box__info">
+          <view class="weui-media-box__info__meta">汕大课程表</view>
+          <view class="weui-media-box__info__meta">2017.10.17</view>
+          <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">糖糖爱学习</view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

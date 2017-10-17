@@ -48,7 +48,7 @@
       <view class="weui-media-box weui-media-box_small-appmsg">
         <view class="option-item weui-cells weui-cells_in-small-appmsg">
 
-          <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <navigator url="/pages/me/about_us/about_us" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
             <view class="weui-cell__bd weui-cell_primary">
               <view>关于我们</view>
             </view>

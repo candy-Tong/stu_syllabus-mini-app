@@ -25,7 +25,18 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function (options) {
-  
+    // 进入更新日志
+    let version = wx.getStorageSync('version')
+    if (version !== global.version) {
+      wx.setStorage({
+        key: 'version',
+        data: global.version,
+      })
+      wx.navigateTo({
+        url: '/pages/me/update_log/update_log',
+      })
+      return
+    }
     wx.setNavigationBarTitle({
       title: '第'+global.week+'周'
     })

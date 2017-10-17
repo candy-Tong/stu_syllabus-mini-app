@@ -1,5 +1,6 @@
 //app.js
 
+global.version='1.0.9'
 global.token = wx.getStorageSync('token')
 
 // 汕大账号信息
@@ -25,8 +26,11 @@ App({
   },
 
   onLaunch: function () {
+    
     // 初始化
-    this.getUserInfo()    // global.userInfo
+    if (global.token) {
+      this.getUserInfo()    // global.userInfo
+    }
     console.log(global)
     if (global.token && global.account) {
       console.log('已登录')
@@ -240,6 +244,9 @@ App({
     for (let index in data) {
       global[index] = data[index]
       wx.setStorageSync(index, global[index])
+      if (index==='token') {
+        this.getUserInfo()    // global.userInfo
+      }
     }
     // 初始化学期信息
     if (data.account) {
@@ -282,6 +289,7 @@ App({
       global.week = 1
       wx.setStorageSync('week', global.week)
     }
+    
 
     console.log("登录回调开始")
     if (typeof callBackObject == 'object') {
