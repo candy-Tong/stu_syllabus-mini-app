@@ -13,7 +13,7 @@
 
         <view class="weui-media-box__info">
           <view class="weui-media-box__info__meta">汕大课程表</view>
-          <view class="weui-media-box__info__meta">2017.10.17</view>
+          <view class="weui-media-box__info__meta">{{item.date}}</view>
           <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">糖糖爱学习</view>
         </view>
       </view>

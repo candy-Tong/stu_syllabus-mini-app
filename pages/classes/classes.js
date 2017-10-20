@@ -11,7 +11,7 @@ Page({
   week: 0,
 
   onLoad: function (options) {
-  
+
   },
 
   /**
@@ -38,7 +38,7 @@ Page({
       return
     }
     wx.setNavigationBarTitle({
-      title: '第'+global.week+'周'
+      title: '第 ' + global.week + ' 周'
     })
 
     if (!global.account || !global.password) {
@@ -109,12 +109,13 @@ Page({
             })
 
           } else {
-            if (res.data.result.error_msg) {
-              errorMsg = res.data.result.error_msg
+            if (res.data.ERROR) {
+              errorMsg = res.data.ERROR
             } else {
               errorMsg = '未知错误'
             }
           }
+          app.showError(errorMsg)
           return
         }
 
@@ -122,7 +123,9 @@ Page({
 
         let classes = res.data
         that.classes = classes
-              
+        app.updateLoginMsg({
+          classes: classes
+        })
         that.showClass(classes)
       },
       complete(res) {
@@ -217,7 +220,7 @@ Page({
    */
   onPullDownRefresh() {
     wx.stopPullDownRefresh()
-
+    let that = this
     wx.showActionSheet({
       itemList: [
         '刷新课表',
@@ -250,15 +253,15 @@ Page({
    */
   onShareAppMessage: function (res) {
 
-    if(!this.classes){
+    if (!this.classes) {
       wx.showModal({
         title: '提示',
         content: '请等待课表加载完毕',
-        showCancel:false
+        showCancel: false
       })
       return
     }
-    let that=this
+    let that = this
     wx.showShareMenu({
       withShareTicket: true
     })
@@ -274,7 +277,7 @@ Page({
         // 转发失败
       }
     }
-    
+
 
   },
 });

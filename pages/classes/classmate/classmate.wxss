@@ -1,1 +1,7 @@
 /* pages/classes/classmate/classmate.wxss */
+.weui-search-bar__cancel-btn{
+  color:#2d8cf0;
+}
+.searchbar-result{
+  margin-bottom: 100px;
+}

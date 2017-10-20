@@ -1,6 +1,7 @@
 //app.js
+let topBar=require('/util/topBar.js');
 
-global.version='1.0.9'
+global.version = '1.0.13'
 global.token = wx.getStorageSync('token')
 
 // 汕大账号信息
@@ -26,7 +27,9 @@ App({
   },
 
   onLaunch: function () {
-    
+    // console.log(topBar)
+    topBar.timer()
+
     // 初始化
     if (global.token) {
       this.getUserInfo()    // global.userInfo
@@ -61,6 +64,27 @@ App({
         },
       })
     }
+  },
+
+  setTopBar(){
+    
+         
+    function timer() {
+      setTimeout(function () {
+        if (global.classes) {
+          let curDate = new Data()
+          // let 
+
+
+
+          wx.setTopBarText({
+            text: '--- ' + i++
+          })
+        }
+        timer()
+      }, 7000);
+    }
+    timer()
   },
 
   // 自动登录，更新信息
@@ -105,10 +129,11 @@ App({
               //更新登录信息
               that.updateLoginMsg({
                 account: res.data.result.account,
-                password: res.data.result.password
+                password: res.data.result.password,
+                week: res.data.result.week
               })
-             
-              
+              console.log(global.week)
+
             },
             fail(res) {
               console.log('auto login失败，可能超时')
@@ -244,7 +269,7 @@ App({
     for (let index in data) {
       global[index] = data[index]
       wx.setStorageSync(index, global[index])
-      if (index==='token') {
+      if (index === 'token') {
         this.getUserInfo()    // global.userInfo
       }
     }
@@ -285,11 +310,11 @@ App({
         semester_index
       }
       wx.setStorageSync('semester', global.semester)
-      // 设为第一周
-      global.week = 1
-      wx.setStorageSync('week', global.week)
+      // // 设为第一周
+      // global.week = 1
+      // wx.setStorageSync('week', global.week)
     }
-    
+
 
     console.log("登录回调开始")
     if (typeof callBackObject == 'object') {
@@ -310,7 +335,7 @@ App({
   checkLogin(callBackObject) {
     let token = global.token
     let account = global.account
-    let password =global.password
+    let password = global.password
     // 必须有token，并且绑定了汕大账号才算登录
     if (token && account && password) {
       //已登录
