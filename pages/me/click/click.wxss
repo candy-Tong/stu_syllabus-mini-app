@@ -1,0 +1,30 @@
+/* pages/me/click/click.wxss */
+
+.notify-num{
+  width: 100%;
+  font-size: 160rpx;
+  text-align: center;
+  margin: 15vh auto 0 auto;
+  color: #2d8cf0;
+}
+
+.click-button {
+  width: 30vh;
+  height: 30vh;
+  border-radius: 30vh;
+  margin-top: 15vh;
+  background-color: #2d8cf0;
+  opacity: 0.9;
+  color: white;
+  font-size: 50rpx;
+  line-height: 30vh;
+}
+
+.click-button::after {
+  border: 0;
+}
+
+.click-button-hover {
+  opacity: 0.6;
+  box-shadow: 3px 3px 3px;
+}

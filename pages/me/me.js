@@ -117,8 +117,8 @@ Page({
         account: global.account
       })
     }
-
     if (global.token && this.token !== global.token) {
+      console.log('更新登录界面')
       this.token = global.token
       var that = this
       var callback = [
@@ -161,6 +161,7 @@ Page({
     }
   },
 
+
   /**
    * 生命周期函数--监听页面隐藏
    */
@@ -196,7 +197,7 @@ Page({
     return {
       title: '汕大的课表',
       path: '/pages/classes/classes',
-      imageUrl:'/image/stu_syllabus.jpg',
+      imageUrl: '/image/stu_syllabus.jpg',
       success: function (res) {
         // 转发成功
         console.log(res)

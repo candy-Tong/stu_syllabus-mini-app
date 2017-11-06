@@ -19,10 +19,7 @@ Page({
   bindWeekChange(e) {
     let week = Number(e.detail.value)
     global.week = week
-    wx.setStorage({
-      key: 'week',
-      data: global.week,
-    })
+
     this.setData({
       week: global.week
     })

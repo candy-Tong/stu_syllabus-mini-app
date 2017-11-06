@@ -1,0 +1,2 @@
+<!--pages/oa/detail/detail.wxml-->
+<web-view src="https://mp.weixin.qq.com/"></web-view>

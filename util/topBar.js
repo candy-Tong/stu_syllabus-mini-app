@@ -111,17 +111,16 @@ function timer() {
             return false
           }
         }
-
-        if (now_time < begin_time) {
-          return true
-        } else {
-          return false
-        }
+        console.log('如果出现此输出，则还有条件未考虑')
       })
-      // console.log(nextClass.classes.name.replace(/\[.*\]/,''))
+      console.log(nextClass)
       let topBarText
       if(nextClass){
-        topBarText = '下一节课：' +nextClass.classes.name.replace(/\[.*\]/, '')
+        // topBarText = '下一节课：' +nextClass.classes.name.replace(/\[.*\]/, '')
+        let time = nextClass.classes.class_schedule[nextClass.class_index].time
+        let begin_time = class_time[time[0]].begin
+        let end_time = class_time[time[time.length - 1]].end
+        topBarText = nextClass.classes.room + ' ' + begin_time + '-' + end_time + ' ' + nextClass.classes.name.replace(/\[.*\]/, '')
       }else{
         topBarText='好开心哦，今天没课啦'
       }
@@ -131,20 +130,21 @@ function timer() {
       wx.setTopBarText({
         text: topBarText
       })
-      if(nextClass){
-        setTimeout(function () {
-          let time = nextClass.classes.class_schedule[nextClass.class_index].time
-          let begin_time = class_time[time[0]].begin
-          let end_time = class_time[time[time.length - 1]].end
-          wx.setTopBarText({
-            text: '时间：' + begin_time + ' - ' + end_time
-          })
-        }, 5500)
-      }
+      // nextClass=''
+      // if(nextClass){
+      //   setTimeout(function () {
+      //     let time = nextClass.classes.class_schedule[nextClass.class_index].time
+      //     let begin_time = class_time[time[0]].begin
+      //     let end_time = class_time[time[time.length - 1]].end
+      //     wx.setTopBarText({
+      //       text: '时间：' + begin_time + ' - ' + end_time
+      //     })
+      //   }, 5500)
+      // }
       }
       
     timer()
-  }, 12000);
+  }, 5500)
 }
 
 module.exports.timer=timer

@@ -1,6 +1,9 @@
+
+
+
+
 {
   "pages": [
-   
     "pages/classes/classes",
     "pages/classes/classmate/classmate",
     "pages/me/about_us/about_us",
@@ -9,7 +12,13 @@
     "pages/classes/setting/setting",
     "pages/me/me",
     "pages/me/account/account",
-    "pages/me/update_log/update_log"
+    "pages/me/update_log/update_log",
+    "pages/start/show/show",
+    "pages/me/click/click",
+    "pages/oa/detail/detail",
+    "pages/oa/list/list",
+    "pages/me/more/more",
+    "pages/me/more/notify_setting/notify_setting"
   ],
   "window": {
     "backgroundTextStyle": "light",

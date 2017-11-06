@@ -6,8 +6,8 @@ Page({
     week: ['', '一', '二', '三', '四', '五', '六', '日'],
     times: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 'A', 'B', 'C']
   },
-  years: '',
-  semester: NaN,
+  years_index: global.years.year_index,
+  semester_index: global.semester.semester_index,
   week: 0,
 
   onLoad: function (options) {
@@ -18,7 +18,11 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    let classes = wx.getStorageSync('classes')
+    if (global.account && global.password) {
+      this.refalshSyllabus(classes)
+      this.classes=classes
+    }
   },
 
   /**
@@ -52,6 +56,7 @@ Page({
         curWeek: global.week
       })
     }
+
     if (global.years.year_index !== this.years_index || global.semester.semester_index !== this.semester_index) {
       this.refalshSyllabus()
     }
@@ -65,73 +70,91 @@ Page({
   },
 
 
-  refalshSyllabus() {
-    this.years_index = global.years.year_index
-    this.semester_index = global.semester.semester_index
+  refalshSyllabus(classes) {
     let that = this
-    wx.showLoading({
-      title: '加载中',
-      mask: true
-    })
-    wx.request({
-      url: global.stuUrl + '/credit/api/v2/sync_syllabus',
-      method: 'post',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: {
-        username: global.account,
-        password: global.password,
-        years: global.years.year_picker[global.years.year_index],
-        semester: global.semester.semester_index,
-        submit: ' query'
-      },
-      success(res) {
-        if (res.statusCode != '200') {
-          let errorMsg
+    if (classes) {
+      that.showClass(classes)
+    } else {
+      this.years_index = global.years.year_index
+      this.semester_index = global.semester.semester_index
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      })
+      wx.request({
+        url: global.stuUrl + '/credit/api/v2/sync_syllabus',
+        method: 'post',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+          username: global.account,
+          password: global.password,
+          years: global.years.year_picker[global.years.year_index],
+          semester: global.semester.semester_index,
+          submit: ' query'
+        },
+        success(res) {
+          if (res.statusCode != '200') {
+            let errorMsg
 
-          if (res.data.ERROR === "the password is wrong") {
-            app.signout()
-            wx.showModal({
-              title: '错误',
-              content: '校园网密码已更改，请重新登录',
-              showCancel: false,
-              confirmColor: "#2d8cf0",
-              success: function (res) {
-                if (res.confirm) {
-                  console.log('用户点击确定')
-                  wx.switchTab({
-                    url: '/pages/me/me',
-                    success: function (res) { }
-                  })
+            if (res.data.ERROR === "the password is wrong") {
+              app.signout()
+              wx.showModal({
+                title: '错误',
+                content: '校园网密码已更改，请重新登录',
+                showCancel: false,
+                confirmColor: "#2d8cf0",
+                success: function (res) {
+                  if (res.confirm) {
+                    console.log('用户点击确定')
+                    wx.switchTab({
+                      url: '/pages/me/me',
+                      success: function (res) { }
+                    })
+                  }
                 }
-              }
-            })
+              })
 
-          } else {
-            if (res.data.ERROR) {
-              errorMsg = res.data.ERROR
             } else {
-              errorMsg = '未知错误'
+              if (res.data.ERROR || res.data.error) {
+                errorMsg = res.data.ERROR || res.data.error
+              } else {
+                errorMsg = '未知错误'
+              }
             }
+            app.showError(errorMsg)
+            return
           }
-          app.showError(errorMsg)
-          return
+          let classes = res.data
+          that.classes = classes
+          app.updateLoginMsg({
+            classes: classes
+          })
+          that.showClass(classes)
+
+          // 服务器缓存课程
+          wx.request({
+            url: encodeURI(global.baseurl + 'classes/classes?' + 'classes=' + JSON.stringify({ classes: classes }) + '&account=' + global.account + '&year=' + global.years.year_picker[global.years.year_index] + '&semester=' + global.semester.semester_index),
+            header: {
+              'Content-Type': 'text/plain;charset:utf-8'
+            },
+            success(res) {
+              
+              console.log(JSON.parse(JSON.stringify(classes)))
+              if (!res.data.is_error) {
+                console.log('服务器缓存课程成功')
+              } else {
+                console.log('服务器缓存课程失败')
+              }
+            }
+          })
+        },
+        complete(res) {
+          wx.hideLoading()
         }
-
-
-
-        let classes = res.data
-        that.classes = classes
-        app.updateLoginMsg({
-          classes: classes
-        })
-        that.showClass(classes)
-      },
-      complete(res) {
-        wx.hideLoading()
-      }
-    })
+      })
+    }
   },
 
   showClass(classes) {
@@ -173,6 +196,7 @@ Page({
       classes
     })
   },
+  // 分割课程，一天内多节课的课程，如：67AB
   splitTime(time) {
     let timeList = []
     let standardTime = '1234567890ABC'

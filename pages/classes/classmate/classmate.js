@@ -38,20 +38,20 @@ Page({
     this.setData({
       inputVal: e.detail.value,
       searchList
-    });
+    })
   },
 
   scrolltoupper(e) {
     console.log(e)
     this.setData({
       showSearch: true,
-      inputVal:''
+      inputVal: ''
     })
   },
 
   scroll(e) {
     console.log(e)
-    if (this.data.showSearch && e.detail.scrollTop>80) {
+    if (this.data.showSearch && e.detail.scrollTop > 80) {
       this.setData({
         showSearch: false
       })
@@ -69,13 +69,27 @@ Page({
       url: 'https://stuapps.com/credit/api/v2.1/member?class_id=' + class_id,
       success(res) {
         console.log(res)
+        if (res.data.message === "connection refused") {
+          wx.showModal({
+            title: '提示',
+            content: '服务器出了问题哦，迟点再试试吧',
+            showCancel: false,
+            confirmColor: "#2d8cf0",
+            success(res){
+              wx.navigateBack({
+                delta: 1,
+              })
+            }
+          })
+          return
+        }
         wx.setNavigationBarTitle({
           title: res.data.data.class_info.className.replace(/\[.*\]/, ""),
         })
         that.setData({
           class_info: res.data.data.class_info
         })
-      },fail(res){
+      }, fail(res) {
         console.log(res)
       }
 

@@ -1,7 +1,7 @@
 //app.js
 let topBar=require('/util/topBar.js');
 
-global.version = '1.0.13'
+global.version = '1.0.1'
 global.token = wx.getStorageSync('token')
 
 // 汕大账号信息
@@ -10,6 +10,7 @@ global.password = wx.getStorageSync('password')
 global.years = wx.getStorageSync('years')
 global.semester = wx.getStorageSync('semester')
 global.week = wx.getStorageSync('week')
+global.classes = wx.getStorageSync('classes')
 
 global.showError = true
 global.baseurl = 'https://candycute.cn/'
@@ -27,7 +28,7 @@ App({
   },
 
   onLaunch: function () {
-    // console.log(topBar)
+    console.log(topBar)
     topBar.timer()
 
     // 初始化
@@ -310,9 +311,7 @@ App({
         semester_index
       }
       wx.setStorageSync('semester', global.semester)
-      // // 设为第一周
-      // global.week = 1
-      // wx.setStorageSync('week', global.week)
+
     }
 
 
@@ -355,6 +354,7 @@ App({
     } else {
       //未登录
       console.log("未登录，错误处理回调开始")
+      this.signout()
       callBackObject.forEach(function (item, index, object) {
         if (item.isError && item.func) {
           if (item.parm) {
