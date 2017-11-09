@@ -33,17 +33,20 @@ Page({
     let notify_num = Number(options.notify_num)
     let max_account=options.max_account
     let max_num=options.max_num
+    let click_num = Number(options.click_num)
     this.setData({
       notify_num,
       max_account,
-      max_num
+      max_num,
+      click_num
     })
   },
 
   click(e){
     console.log(this.data.notify_num)
     this.setData({
-      notify_num: (this.data.notify_num+1)
+      notify_num: (this.data.notify_num+1),
+      click_num: (this.data.click_num + 1)
     })
   },
   /**

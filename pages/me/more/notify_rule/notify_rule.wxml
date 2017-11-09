@@ -1,0 +1,29 @@
+<!--pages/me/more/notify_rule/notify_rule.wxml-->
+<view class="weui-panel">
+  <view class="weui-panel__hd">课程提醒使用规则</view>
+  <view class="weui-panel__bd">
+    <view class="weui-media-box weui-media-box_text">
+      <view class="weui-media-box__title weui-media-box__title_in-text">如何使用</view>
+      <view class="detail">使用课程提醒，需要打开课程提醒开关，并且设置需要提醒的课程，请注意默认为所有课程不提醒，课程提醒功能正常使用需要保证提醒次数大于1</view>
+
+    </view>
+    <view class="weui-media-box weui-media-box_text">
+      <view class="weui-media-box__title weui-media-box__title_in-text">提醒次数</view>
+      <view class="detail">每次提醒会消耗一个课程次数，课程次数为0将不会提醒，点击指定按钮可以增加课程提醒次数，课程提醒次数有效期为一周，即每次点击后增加的次数，在一周后将会失效。
+      </view>
+    </view>
+  </view>
+
+
+  <view class="weui-media-box weui-media-box_text">
+    <view class="weui-media-box__title weui-media-box__title_in-text">有效/总次数</view>
+    <view class="detail">由于微信限制，提醒次数仅有一周的有效期，超过一周后，提醒次数未使用，将会失效。总次数是记录总的点击次数的，大家开心就好~
+    </view>
+  </view>
+
+  <view class="weui-media-box weui-media-box_text">
+    <view class="weui-media-box__title weui-media-box__title_in-text">测试阶段</view>
+    <view class="detail">课程提醒功能仍处于测试阶段，可能出现一些bug，请大家谅解，如果想要关闭提醒功能，关闭提醒功能的开关即可。
+    </view>
+  </view>
+</view>

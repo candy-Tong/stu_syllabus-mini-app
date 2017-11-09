@@ -4,6 +4,8 @@ let topBar=require('/util/topBar.js');
 global.version = '1.0.1'
 global.token = wx.getStorageSync('token')
 
+// wx.setStorageSync('week', 10)
+
 // 汕大账号信息
 global.account = wx.getStorageSync('account')
 global.password = wx.getStorageSync('password')
@@ -67,27 +69,6 @@ App({
     }
   },
 
-  setTopBar(){
-    
-         
-    function timer() {
-      setTimeout(function () {
-        if (global.classes) {
-          let curDate = new Data()
-          // let 
-
-
-
-          wx.setTopBarText({
-            text: '--- ' + i++
-          })
-        }
-        timer()
-      }, 7000);
-    }
-    timer()
-  },
-
   // 自动登录，更新信息
   autoLogin() {
     var that = this
@@ -106,24 +87,23 @@ App({
               console.log(res)
               if (res.statusCode != '200') {
                 let errorMsg
-                // 这里暂不检查，因为查询课表api检查了
-                // if (res.data.error_code === 1) {
-                //   that.updateLoginMsg({
-                //     account: res.data.result.account
-                //   })
-                //   that.signout()
-                //   wx.switchTab({
-                //     url: '/pages/me/me',
-                //     success: function (res) { }
-                //   })
-                // } else {
-                //   if (res.data.result.error_msg) {
-                //     errorMsg = res.data.result.error_msg
-                //   } else {
-                //     errorMsg = '未知错误'
-                //   }
-                //   that.showError(errorMsg)
-                // }
+                if (res.data.error_code === 1) {
+                  that.updateLoginMsg({
+                    account: res.data.result.account
+                  })
+                  that.signout()
+                  wx.switchTab({
+                    url: '/pages/me/me',
+                    success: function (res) { }
+                  })
+                } else {
+                  if (res.data.result.error_msg) {
+                    errorMsg = res.data.result.error_msg
+                  } else {
+                    errorMsg = '未知错误'
+                  }
+                  that.showError(errorMsg)
+                }
                 return
               }
 

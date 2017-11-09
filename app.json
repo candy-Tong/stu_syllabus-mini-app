@@ -1,7 +1,3 @@
-
-
-
-
 {
   "pages": [
     "pages/classes/classes",
@@ -18,7 +14,8 @@
     "pages/oa/detail/detail",
     "pages/oa/list/list",
     "pages/me/more/more",
-    "pages/me/more/notify_setting/notify_setting"
+    "pages/me/more/notify_setting/notify_setting",
+    "pages/me/more/notify_rule/notify_rule"
   ],
   "window": {
     "backgroundTextStyle": "light",

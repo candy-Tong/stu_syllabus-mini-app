@@ -15,9 +15,17 @@ Page({
       })
       // 服务器缓存课程
       wx.request({
-        url: encodeURI(global.baseurl + 'classes/classes?' + 'classes=' + JSON.stringify({ classes: global.classes }) + '&account=' + global.account + '&year=' + global.years.year_picker[global.years.year_index] + '&semester=' + global.semester.semester_index),
+        url: global.baseurl + 'classes/classes',
+        method:'post',
+        data: {
+          classes: JSON.stringify({ classes: global.classes }),
+          account: global.account,
+          year: global.years.year_picker[global.years.year_index],
+          semester: global.semester.semester_index
+        },
         header: {
-          'Content-Type': 'text/plain;charset:utf-8'
+          'Content-Type': 'text/plain;charset:utf-8',
+          'content-type': 'application/x-www-form-urlencoded'
         },
         success(res) {
           if (!res.data.is_error) {
@@ -35,11 +43,11 @@ Page({
     }
     wx.setStorageSync('showNotify', e.detail.value)
     wx.request({
-      url: global.baseurl +'classes/showNotify?account='+global.account+'&showNotify='+e.detail.value,
-      success(res){
-        if(res.data.is_error){
+      url: global.baseurl + 'classes/showNotify?account=' + global.account + '&showNotify=' + e.detail.value,
+      success(res) {
+        if (res.data.is_error) {
           console.log('修改classesNotify错误')
-          if(res.data.error_msg){
+          if (res.data.error_msg) {
             console(res.data.error_msg)
           }
           return
@@ -60,8 +68,9 @@ Page({
         let notify_num = res.data.result.notify_num
         let max_account = res.data.result.max_account
         let max_num = res.data.result.max_num
+        let click_num = res.data.result.click_num
         wx.navigateTo({
-          url: '/pages/me/click/click?notify_num=' + notify_num + '&max_account=' + max_account + '&max_num=' + max_num
+          url: '/pages/me/click/click?notify_num=' + notify_num + '&max_account=' + max_account + '&max_num=' + max_num+'&click_num='+click_num
         })
       }
     })
@@ -71,10 +80,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let showNotify = wx.getStorageSync('showNotify')
-    this.setData({
-      showNotify
-    })
+
+
   },
 
   /**
@@ -88,7 +95,35 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    let showNotify = wx.getStorageSync('showNotify')
+    if(showNotify){
+      let that = this
+      wx.request({
+        url: global.baseurl + 'classes/notify_num?account=' + global.account,
+        success(res) {
+          if(res.statusCode!==200){
+            that.setData({
+              showNotify:false
+            })
+            return
+          }
 
+          if (res.data.is_error) {
+            console.log('获取notify_num失败')
+            return
+          }
+          let notify_num = res.data.result.notify_num
+          let max_account = res.data.result.max_account
+          let max_num = res.data.result.max_num
+          that.setData({
+            showNotify,
+            notify_num,
+            max_account,
+            max_num
+          })
+        }
+      })
+    }
   },
 
   /**
