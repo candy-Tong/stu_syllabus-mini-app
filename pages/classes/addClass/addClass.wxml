@@ -1,0 +1,153 @@
+<!--pages/classes/addClass/addClass.wxml-->
+<view class="page">
+  <view class="page__bd">
+    <view class="weui-tab">
+      <view class="weui-navbar">
+        <block wx:for="{{tabs}}" wx:key="*this">
+          <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+            <view class="weui-navbar__title">{{item}}</view>
+          </view>
+        </block>
+        <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
+      </view>
+      <view class="weui-tab__panel">
+
+        <view class="navbar-content" hidden="{{activeIndex != 0}}">
+
+
+          <view class="weui-cells weui-cells_after-title">
+
+            <!-- 课程名称 -->
+            <view class="weui-cell weui-cell_input">
+              <view class="weui-cell__hd">
+                <view class="option-item weui-label">课程名称</view>
+              </view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" bindinput="nameInput" placeholder="请输入课程名称，必填" />
+              </view>
+            </view>
+
+            <!-- 课程学年 -->
+            <view class="weui-cell weui-cell_select">
+              <view class="option-item weui-cell__hd weui-cell__hd_in-select-after">
+                <view class="weui-label">课程学年</view>
+              </view>
+              <view class="weui-cell__bd">
+                <picker mode="selector" bindchange="year_picker_change" value="{{years.year_index}}" range="{{years.year_picker}}">
+                  <view class="option-value weui-select weui-select_in-select-after">{{years.year_picker[years.year_index]}}</view>
+                </picker>
+              </view>
+            </view>
+
+            <!-- 课程学期 -->
+            <view class="weui-cell weui-cell_select">
+              <view class="option-item weui-cell__hd weui-cell__hd_in-select-after">
+                <view class="weui-label">课程学期</view>
+              </view>
+              <view class="weui-cell__bd">
+                <picker mode="selector" bindchange="semester_picker_change" value="{{semester.semester_index-1}}" range="{{semester.semester_picker}}">
+                  <view class="option-value weui-select weui-select_in-select-after">{{semester.semester_picker[semester.semester_index-1]}}</view>
+                </picker>
+              </view>
+            </view>
+
+            <!-- 授课老师 -->
+            <view class="weui-cell weui-cell_input">
+              <view class="weui-cell__hd">
+                <view class="option-item weui-label">授课老师</view>
+              </view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" bindinput="teacherInput" placeholder="请输入授课老师，可不填" />
+              </view>
+            </view>
+
+            <!-- 上课教室 -->
+            <view class="weui-cell weui-cell_input">
+              <view class="weui-cell__hd">
+                <view class="option-item weui-label">上课教室</view>
+              </view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" bindinput="roomInput" placeholder="请输入上课教室，可不填" />
+              </view>
+            </view>
+
+            <!-- 课程学分 -->
+            <view class="weui-cell weui-cell_input">
+              <view class="weui-cell__hd">
+                <view class="option-item weui-label">课程学分</view>
+              </view>
+              <view class="weui-cell__bd">
+                <input type="digit" class="weui-input" bindinput="creditInput" placeholder="请输入课程学分，可不填" />
+              </view>
+            </view>
+
+            <!-- 课程周数 -->
+            <view class="weui-cell weui-cell_select">
+              <view class="option-item weui-cell__hd weui-cell__hd_in-select-after">
+                <view class="weui-label">课程周数</view>
+              </view>
+              <view class="weui-cell__bd">
+                <picker mode="multiSelector" bindchange="week_picker_change" value="{{week_index}}" range="{{week_picker}}">
+                  <view class="option-value weui-select weui-select_in-select-after">{{week_picker[0][week_index[0]]}} - {{week_picker[1][week_index[1]]}}周 / {{week_picker[2][week_index[2]]}}</view>
+                </picker>
+              </view>
+            </view>
+
+            <!-- 课程数量 -->
+            <view class="weui-cell weui-cell_select">
+              <view class="option-item weui-cell__hd weui-cell__hd_in-select-after">
+                <view class="weui-label">课程数量</view>
+              </view>
+              <view class="weui-cell__bd">
+                <picker mode="selector" bindchange="class_num_picker_change" value="{{class_num_index}}" range="{{class_num_picker}}">
+                  <view class="option-value weui-select weui-select_in-select-after">每周{{class_num_picker[class_num_index]}}节</view>
+                </picker>
+              </view>
+            </view>
+          </view>
+
+          <!-- 课程规划信息 -->
+          <block wx:for='{{class_schedule}}' wx:key="{{index}}">
+            <view class="weui-panel__hd">第{{index+1}}节</view>
+            <view class="weui-cells weui-cells_after-title">
+
+              <!-- 星期 -->
+              <view class="weui-cell weui-cell_select">
+                <view class="option-item weui-cell__hd weui-cell__hd_in-select-after">
+                  <view class="weui-label">星期</view>
+                </view>
+                <view class="weui-cell__bd">
+                  <picker mode="selector" data-index='{{index}}' bindchange="day_picker_change" value="{{item.day_index}}" range="{{day_picker}}">
+                    <view class="option-value weui-select weui-select_in-select-after">{{day_picker[item.day_index]}}</view>
+                  </picker>
+                </view>
+              </view>
+
+              <!-- 时间 -->
+              <view class="weui-cell weui-cell_select">
+                <view class="option-item weui-cell__hd weui-cell__hd_in-select-after">
+                  <view class="weui-label">时间</view>
+                </view>
+                <navigator url='{{"/pages/classes/addClass/selectClassTime?index="+index}}' class="weui-cell__bd">
+                  <view class="option-value weui-select weui-select_in-select-after">{{item.classTime?item.classTime+'节课':'未选择'}}</view>
+
+                </navigator>
+              </view>
+
+            </view>
+          </block>
+
+          <view class="button-wrapper">
+            <button bindtap="addClass" hover-class="add_class_button_hover" class="add_class_button">确定</button>
+          </view>
+
+        </view>
+
+
+        <view class="weui-tab__content" hidden="{{activeIndex != 1}}">选项二的内容</view>
+
+
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,19 @@
+/* pages/classes/addClass/selectClassTime.wxss */
+.weui-cell__bd{
+  color: #999
+}
+.weui-cell__bd{
+  position: relative;
+}
+.class-num{
+  display: inline-block;
+  width: 6em;
+  text-align: center;
+}
+.class-time{
+  display: inline-block;
+  width: 10em;
+  position: absolute;
+  left: 6em;
+  text-align: center;
+}

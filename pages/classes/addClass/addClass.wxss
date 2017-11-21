@@ -1,0 +1,54 @@
+/* pages/classes/addClass/addClass.wxss */
+
+page, .page, .page__bd {
+  height: 100%;
+}
+
+.page__bd {
+  padding-bottom: 0;
+}
+.weui-navbar{
+   /* background-color: white  */
+}
+
+.navbar-content{
+  padding-bottom: 50px;
+}
+
+.weui-tab__content {
+  padding-top: 60px;
+  text-align: center;
+}
+
+.weui-navbar__item.weui-bar__item_on {
+  color: #2d8cf0;
+}
+
+.weui-navbar__slider {
+  background-color: #2d8cf0;
+}
+
+.option-item {
+  color: #495060;
+}
+.option-value{
+  color:#999999;
+}
+.button-wrapper{
+  padding-top: 40rpx;
+  text-align: center;
+}
+
+.add_class_button {
+  margin-top: 10rpx;
+  color: #2d8cf0;
+  background-color: white;
+  width: 420rpx;
+}
+
+.add_class_button_hover {
+  background-color: rgba(200, 200, 200, 0.1);
+  opacity: 0.7;
+}
+
+

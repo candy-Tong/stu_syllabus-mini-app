@@ -21,7 +21,7 @@ Page({
     let classes = wx.getStorageSync('classes')
     if (global.account && global.password) {
       this.refalshSyllabus(classes)
-      this.classes=classes
+      this.classes = classes
     }
   },
 
@@ -57,8 +57,11 @@ Page({
       })
     }
 
-    if (global.years.year_index !== this.years_index || global.semester.semester_index !== this.semester_index) {
+    if ((global.years.year_index !== this.years_index || global.semester.semester_index !== this.semester_index) || global.refalshClasses) {
       this.refalshSyllabus()
+      if (global.refalshClasses) {
+        global.refalshClasses = false
+      }
     }
   },
 
@@ -133,22 +136,7 @@ Page({
           })
           that.showClass(classes)
 
-          // 服务器缓存课程
-          wx.request({
-            url: encodeURI(global.baseurl + 'classes/classes?' + 'classes=' + JSON.stringify({ classes: classes }) + '&account=' + global.account + '&year=' + global.years.year_picker[global.years.year_index] + '&semester=' + global.semester.semester_index),
-            header: {
-              'Content-Type': 'text/plain;charset:utf-8'
-            },
-            success(res) {
-              
-              console.log(JSON.parse(JSON.stringify(classes)))
-              if (!res.data.is_error) {
-                console.log('服务器缓存课程成功')
-              } else {
-                console.log('服务器缓存课程失败')
-              }
-            }
-          })
+          app.saveClasses()
         },
         complete(res) {
           wx.hideLoading()
@@ -168,7 +156,7 @@ Page({
       var room = classes[i].room
       room = room.replace('座', '')
       // console.log(classname)
-      var classColor = color[i]
+      var classColor = color[i % color.length]
 
       for (let j in classes[i].class_schedule) {
         // console.log(j)
@@ -248,7 +236,8 @@ Page({
     wx.showActionSheet({
       itemList: [
         '刷新课表',
-        '设置课表'
+        '设置课表',
+        '新增课程'
       ],
       success: function (res) {
         if (!res.cancel) {
@@ -259,6 +248,10 @@ Page({
           } else if (res.tapIndex === 1) {
             wx.navigateTo({
               url: 'setting/setting'
+            })
+          } else if (res.tapIndex === 2) {
+            wx.navigateTo({
+              url: 'addClass/addClass',
             })
           }
         }

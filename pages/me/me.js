@@ -30,23 +30,22 @@ Page({
         {
           func: function () {
             wx.hideLoading()
+            console.time('getUserInfo')
             if (global.account && global.password) {
               app.getUserInfo(function (userInfo) {
                 //更新数据
                 that.setData({
                   userInfo: userInfo,
                   account: global.account,
-                  isLogin: true
+                  isLogin: true,
+                  years: global.years,
+                  semester: global.semester
+                },function(){
+                  console.timeEnd('getUserInfo')
                 })
+                console.timeEnd('login')
               })
             }
-          }
-        }, {
-          func: function () {
-            that.setData({
-              years: global.years,
-              semester: global.semester
-            })
           }
         },
         {
@@ -60,6 +59,8 @@ Page({
           }
         }
       ]
+      console.time('login')
+      console.time('request')
       app.first_login(e, callback)
 
     } else {
@@ -110,6 +111,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      notice:global.notice
+    })
     console.log(global)
     // 监听当前用户的改变
     if (this.data.account != global.account) {

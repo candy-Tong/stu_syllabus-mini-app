@@ -1,6 +1,6 @@
 <!--pages/me/click/click.wxml-->
 <view class="page">
-  <view class="weui-panel__bd">
+  <!-- <view class="weui-panel__bd">
     <view class="weui-media-box weui-media-box_small-appmsg">
       <view class="weui-cells weui-cells_in-small-appmsg">
         <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
@@ -8,15 +8,19 @@
             <image src="{{icon20}}" style="width: 40rpx;height: 40rpx;margin-right: 5px" />
           </view>
           <view class="weui-cell__bd weui-cell_primary">
-            <view>★ 最强王者 ★：<text>{{max_account}}</text></view>
+            <view>★ 最强王者 ★：
+              <text>{{max_account}}</text>
+            </view>
           </view>
           <view class="weui-cell__ft weui-cell__ft_in-access">{{max_num}}</view>
         </navigator>
       </view>
     </view>
+  </view> -->
+
+  <view class='notify-num'>{{notify_num?notify_num:'~'}}<text class='click-num'>/{{click_num?click_num:'~'}}</text>
   </view>
-  <view class='notify-num'>{{notify_num?notify_num:'~'}}</view>
   <form bindsubmit="formSubmit" bindreset="formReset" report-submit='true'>
-    <button bindtap='click' form-type="submit" class="click-button" hover-class='click-button-hover'>！戳我！</button>
+    <button bindtap='click' bindtouchend='click_end' form-type="submit" class="click-button" hover-class='click-button-hover'> {{click_num%2===0?'╰(●’◡’●)╮':'╭(●‘◡‘●)╯'}} </button>
   </form>
 </view>

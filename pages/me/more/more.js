@@ -1,4 +1,5 @@
 // pages/me/more/more.js
+let app = getApp()
 Page({
 
   /**
@@ -13,28 +14,7 @@ Page({
       this.setData({
         showNotify: true
       })
-      // 服务器缓存课程
-      wx.request({
-        url: global.baseurl + 'classes/classes',
-        method:'post',
-        data: {
-          classes: JSON.stringify({ classes: global.classes }),
-          account: global.account,
-          year: global.years.year_picker[global.years.year_index],
-          semester: global.semester.semester_index
-        },
-        header: {
-          'Content-Type': 'text/plain;charset:utf-8',
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        success(res) {
-          if (!res.data.is_error) {
-            console.log('服务器缓存课程成功')
-          } else {
-            console.log('服务器缓存课程失败')
-          }
-        }
-      })
+      app.saveClasses()
     } else {
       // 关闭课程提醒
       this.setData({
@@ -56,6 +36,12 @@ Page({
     })
   },
 
+  admire() {
+    wx.previewImage({
+      urls: ['http://candycute.cn/admire.jpg']
+    })
+  },
+
   goClickPage(e) {
     let that = this
     wx.request({
@@ -70,7 +56,7 @@ Page({
         let max_num = res.data.result.max_num
         let click_num = res.data.result.click_num
         wx.navigateTo({
-          url: '/pages/me/click/click?notify_num=' + notify_num + '&max_account=' + max_account + '&max_num=' + max_num+'&click_num='+click_num
+          url: '/pages/me/click/click?notify_num=' + notify_num + '&max_account=' + max_account + '&max_num=' + max_num + '&click_num=' + click_num
         })
       }
     })
@@ -96,14 +82,15 @@ Page({
    */
   onShow: function () {
     let showNotify = wx.getStorageSync('showNotify')
-    if(showNotify){
+    if (showNotify) {
       let that = this
       wx.request({
         url: global.baseurl + 'classes/notify_num?account=' + global.account,
         success(res) {
-          if(res.statusCode!==200){
+          if (res.statusCode !== 200) {
             that.setData({
-              showNotify:false
+              showNotify: false,
+              notice: global.notice
             })
             return
           }
@@ -124,6 +111,15 @@ Page({
         }
       })
     }
+  },
+
+  classes_notify_use_click() {
+    delete global.notice.other.classes_notify_use
+    console.log(global.notice)
+    app.updateLoginMsg({ notice: global.notice })
+    this.setData({
+      notice: global.notice
+    })
   },
 
   /**

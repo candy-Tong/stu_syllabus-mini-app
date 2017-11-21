@@ -1,7 +1,7 @@
 //app.js
 let topBar=require('/util/topBar.js');
 
-global.version = '1.0.1'
+global.version = '1.0.17'
 global.token = wx.getStorageSync('token')
 
 // wx.setStorageSync('week', 10)
@@ -19,6 +19,15 @@ global.baseurl = 'https://candycute.cn/'
 global.stuUrl = 'https://class.stuapps.com'
 
 
+global.notice = wx.getStorageSync('notice')
+global.notice = global.notice ? global.notice : {
+  other:{
+    update_log: true,
+    classes_notify_use: true,
+    notify_setting: true
+  }
+}
+wx.setStorageSync('notice', global.notice)
 
 App({
 
@@ -69,6 +78,46 @@ App({
     }
   },
 
+  saveClasses(){
+    if(!global.classes||global.classes.length===0){
+      wx.showModal({
+        title: '错误',
+        content: '请先刷新课程',
+        showCancel: false,
+        confirmColor: "#2d8cf0",
+        success: function (res) {
+          wx.switchTab({
+            url: '/pages/classes/classes'
+          })
+        }
+      })
+      return
+    }
+    // 服务器缓存课程
+    wx.request({
+      url: global.baseurl + 'classes/classes',
+      method: 'post',
+      data: {
+        classes: JSON.stringify({ classes: global.classes }),
+        account: global.account,
+        year: global.years.year_picker[global.years.year_index],
+        semester: global.semester.semester_index
+      },
+      header: {
+        'Content-Type': 'text/plain;charset:utf-8',
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        if (!res.data.is_error) {
+          console.log('服务器缓存课程成功')
+        } else {
+          console.log('服务器缓存课程失败')
+        }
+      }
+    })
+
+  },
+
   // 自动登录，更新信息
   autoLogin() {
     var that = this
@@ -86,6 +135,10 @@ App({
             success(res) {
               console.log(res)
               if (res.statusCode != '200') {
+                if(res.statusCode>=500){
+                  console.log('服务器错误')
+                  return
+                }
                 let errorMsg
                 if (res.data.error_code === 1) {
                   that.updateLoginMsg({
@@ -165,8 +218,12 @@ App({
               console.log(res)
 
               if (res.statusCode != '200') {
-                let errorMsg
+                if (res.statusCode >= 500) {
+                  console.log('服务器错误')
+                  return
+                }
 
+                let errorMsg
                 if (res.data.error_code === 1) {
                   that.updateLoginMsg({
                     account: res.data.result.account,
@@ -210,6 +267,7 @@ App({
                   data: global.password,
                 })
               }
+      
               that.updateLoginMsg(res.data.result, callbackObject)
 
             }, fail(res) {
@@ -293,7 +351,6 @@ App({
       wx.setStorageSync('semester', global.semester)
 
     }
-
 
     console.log("登录回调开始")
     if (typeof callBackObject == 'object') {

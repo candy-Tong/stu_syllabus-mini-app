@@ -46,7 +46,8 @@ Page({
     console.log(this.data.notify_num)
     this.setData({
       notify_num: (this.data.notify_num+1),
-      click_num: (this.data.click_num + 1)
+      click_num: (this.data.click_num + 1),
+      is_hover:true
     })
   },
   /**

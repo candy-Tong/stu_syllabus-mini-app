@@ -1,0 +1,22 @@
+<!--pages/classes/addClass/selectClassTime.wxml-->
+
+<view class="weui-cells__title">选择课程时间</view>
+<view class="weui-cells weui-cells_after-title">
+
+
+  <checkbox-group bindchange="checkboxChange">
+    <label class="weui-cell weui-check__label" wx:for="{{classTime}}" wx:key="{{index}}">
+      <checkbox  class="weui-check" value="{{item.time}}" checked="{{selectList[index]}}" />
+
+      <view class="weui-cell__hd weui-check__hd_in-checkbox">
+        <icon color="#2d8cf0" class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{!selectList[index]}}"></icon>
+        <icon color="#2d8cf0" class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{selectList[index]}}"></icon>
+      </view>
+      <view class="weui-cell__bd">
+        <text class='class-num'>第 {{item.time}} 小节</text>
+        <text class='class-time'> {{item.begin}} ~ {{item.end}}</text>
+      </view>
+    </label>
+  </checkbox-group>
+
+</view>

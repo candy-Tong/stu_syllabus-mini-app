@@ -113,7 +113,7 @@ function timer() {
         }
         console.log('如果出现此输出，则还有条件未考虑')
       })
-      console.log(nextClass)
+      // console.log(nextClass)
       let topBarText
       if(nextClass){
         // topBarText = '下一节课：' +nextClass.classes.name.replace(/\[.*\]/, '')

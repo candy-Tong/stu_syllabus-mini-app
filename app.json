@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/classes/classes",
+    "pages/classes/addClass/addClass",
+    "pages/classes/addClass/selectClassTime",
     "pages/classes/classmate/classmate",
     "pages/me/about_us/about_us",
     "pages/classes/share/share",
@@ -15,7 +17,9 @@
     "pages/oa/list/list",
     "pages/me/more/more",
     "pages/me/more/notify_setting/notify_setting",
-    "pages/me/more/notify_rule/notify_rule"
+    "pages/me/more/notify_rule/notify_rule",
+    "pages/me/information/information",
+    "pages/me/more/admire/admire"
   ],
   "window": {
     "backgroundTextStyle": "light",
