@@ -1,5 +1,5 @@
 //app.js
-let topBar=require('/util/topBar.js');
+let topBar = require('/util/topBar.js');
 
 global.version = '1.0.17'
 global.token = wx.getStorageSync('token')
@@ -21,7 +21,7 @@ global.stuUrl = 'https://class.stuapps.com'
 
 global.notice = wx.getStorageSync('notice')
 global.notice = global.notice ? global.notice : {
-  other:{
+  other: {
     update_log: true,
     classes_notify_use: true,
     notify_setting: true
@@ -78,8 +78,8 @@ App({
     }
   },
 
-  saveClasses(){
-    if(!global.classes||global.classes.length===0){
+  saveClasses() {
+    if (!global.classes || global.classes.length === 0) {
       wx.showModal({
         title: '错误',
         content: '请先刷新课程',
@@ -135,7 +135,7 @@ App({
             success(res) {
               console.log(res)
               if (res.statusCode != '200') {
-                if(res.statusCode>=500){
+                if (res.statusCode >= 500) {
                   console.log('服务器错误')
                   return
                 }
@@ -267,7 +267,7 @@ App({
                   data: global.password,
                 })
               }
-      
+
               that.updateLoginMsg(res.data.result, callbackObject)
 
             }, fail(res) {
@@ -312,15 +312,31 @@ App({
         this.getUserInfo()    // global.userInfo
       }
     }
+
     // 初始化学期信息
     if (data.account) {
+      // global.account='abc'
       // 初始化学期信息
       // 设为当前学年
       let enrollment_year = global.account.substring(0, 2)
       let year_picker = []
-      for (let i = 0; i < 6; i++) {
-        year_picker.push('20' + (Number(enrollment_year) + i) + '-' + '20' + (Number(enrollment_year) + i + 1))
+
+      if (Number(enrollment_year)) {
+        for (let i = 0; i < 6; i++) {
+          year_picker.push('20' + (Number(enrollment_year) + i) + '-' + '20' + (Number(enrollment_year) + i + 1))
+        }
+      } else {
+        console.log('教室')
+        // 账户中没有入学年份，可能为老师
+        enrollment_year = undefined
+        let year = new Date().getFullYear()
+        for (let i = year - 7; i <= year + 3; i++) {
+          year_picker.push(i + '-' + (i + 1))
+        }
+
       }
+
+
       // 找出当前学年、学期的picker index
       let date = new Date()
       let this_year = date.getFullYear() + '-' + (Number(date.getFullYear()) + 1)
@@ -328,7 +344,7 @@ App({
         return year === this_year
       })
       global.years = {
-        enrollment_year,
+        enrollment_year: '20' + enrollment_year,
         year_picker,
         year_index
       }
